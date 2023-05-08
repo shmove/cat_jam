@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.shmove.cat_jam.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+  ],
+  "client": [
+    "CatEntityMixin",
+    "CatEntityModelMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

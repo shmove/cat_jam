@@ -1,0 +1,36 @@
+{
+  "schemaVersion": 1,
+  "id": "cat_jam",
+  "version": "${version}",
+
+  "name": "cat_jam",
+  "description": "makes cats jam to the rhythm of music discs :3",
+  "authors": [
+    "shmove"
+  ],
+  "contact": {
+    "issues": "https://github.com/shmove/cat_jam/issues",
+    "sources": "https://github.com/shmove/cat_jam",
+    "discord": "@shmove#0615"
+  },
+
+  "license": "CC-BY-NC-SA-4.0",
+  "icon": "assets/cat_jam/icon.png",
+
+  "environment": "client",
+  "entrypoints": {
+    "main": [
+      "com.shmove.cat_jam.cat_jam"
+    ]
+  },
+  "mixins": [
+    "cat_jam.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.14.19",
+    "fabric-api": "*",
+    "minecraft": "~1.19.4",
+    "java": ">=17"
+  }
+}
