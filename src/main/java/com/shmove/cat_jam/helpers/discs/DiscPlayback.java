@@ -1,7 +1,4 @@
-package com.shmove.cat_jam;
-
-import com.shmove.cat_jam.records.Disc;
-import com.shmove.cat_jam.records.DiscSegment;
+package com.shmove.cat_jam.helpers.discs;
 
 public class DiscPlayback {
 

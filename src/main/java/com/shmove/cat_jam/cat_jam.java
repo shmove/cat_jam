@@ -1,8 +1,10 @@
 package com.shmove.cat_jam;
 
-import com.shmove.cat_jam.records.Disc;
-import com.shmove.cat_jam.records.DiscSegment;
-import com.shmove.cat_jam.records.DiscSegment.NodType;
+import com.shmove.cat_jam.helpers.CatMixinAccess;
+import com.shmove.cat_jam.helpers.discs.Disc;
+import com.shmove.cat_jam.helpers.discs.DiscManager;
+import com.shmove.cat_jam.helpers.discs.DiscSegment;
+import com.shmove.cat_jam.helpers.discs.DiscSegment.NodType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.ModInitializer;

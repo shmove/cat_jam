@@ -1,6 +1,5 @@
-package com.shmove.cat_jam;
+package com.shmove.cat_jam.helpers.discs;
 
-import com.shmove.cat_jam.records.Disc;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -11,10 +10,12 @@ public class DiscManager {
     private final List<Disc> discs;
 
     public DiscManager() {
-        discs = new ArrayList<Disc>();
+        discs = new ArrayList<>();
     }
 
-    public List<Disc> getDiscs() { return discs; }
+    public void addDisc(Disc disc) {
+        discs.add(disc);
+    }
 
     @Nullable
     public Disc getDisc(String id) {
@@ -24,10 +25,6 @@ public class DiscManager {
             }
         }
         return null;
-    }
-
-    public void addDisc(Disc disc) {
-        discs.add(disc);
     }
 
 }

@@ -1,8 +1,8 @@
-package com.shmove.cat_jam.records;
+package com.shmove.cat_jam.helpers.discs;
 
 public record DiscSegment(double bpm, int lengthInBeats, NodType nodType, double beatTickInterval) {
 
-    public static enum NodType {
+    public enum NodType {
         NONE,
         NORMAL,
         SLIGHT,

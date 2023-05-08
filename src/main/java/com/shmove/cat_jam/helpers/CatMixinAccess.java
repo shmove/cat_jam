@@ -1,6 +1,6 @@
-package com.shmove.cat_jam;
+package com.shmove.cat_jam.helpers;
 
-import com.shmove.cat_jam.records.Disc;
+import com.shmove.cat_jam.helpers.discs.Disc;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
 

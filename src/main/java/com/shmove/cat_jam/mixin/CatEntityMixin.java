@@ -1,10 +1,10 @@
-package com.shmove.cat_jam.mixins;
+package com.shmove.cat_jam.mixin;
 
-import com.shmove.cat_jam.CatMixinAccess;
-import com.shmove.cat_jam.DiscPlayback;
+import com.shmove.cat_jam.helpers.CatMixinAccess;
+import com.shmove.cat_jam.helpers.discs.DiscPlayback;
 import com.shmove.cat_jam.cat_jam;
-import com.shmove.cat_jam.records.Disc;
-import com.shmove.cat_jam.records.DiscSegment;
+import com.shmove.cat_jam.helpers.discs.Disc;
+import com.shmove.cat_jam.helpers.discs.DiscSegment;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.particle.ParticleTypes;
@@ -15,7 +15,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(CatEntity.class)
 public class CatEntityMixin implements CatMixinAccess {

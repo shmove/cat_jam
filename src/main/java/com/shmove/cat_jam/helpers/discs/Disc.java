@@ -1,4 +1,4 @@
-package com.shmove.cat_jam.records;
+package com.shmove.cat_jam.helpers.discs;
 
 import java.util.List;
 

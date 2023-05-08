@@ -1,6 +1,6 @@
-package com.shmove.cat_jam.mixins;
+package com.shmove.cat_jam.mixin;
 
-import com.shmove.cat_jam.CatMixinAccess;
+import com.shmove.cat_jam.helpers.CatMixinAccess;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.model.ModelUtil;
 import net.minecraft.client.render.entity.model.CatEntityModel;
