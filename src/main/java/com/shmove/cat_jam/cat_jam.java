@@ -1,5 +1,6 @@
 package com.shmove.cat_jam;
 
+import com.shmove.cat_jam.event.JukeboxDiscUpdateCallback;
 import com.shmove.cat_jam.helpers.CatMixinAccess;
 import com.shmove.cat_jam.helpers.discs.Disc;
 import com.shmove.cat_jam.helpers.discs.DiscManager;
@@ -8,20 +9,14 @@ import com.shmove.cat_jam.helpers.discs.DiscSegment.NodType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.event.player.UseBlockCallback;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.CatEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.MusicDiscItem;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,63 +36,25 @@ public class cat_jam implements ModInitializer {
         // However, some things (like resources) may still be uninitialized.
         // Proceed with mild caution.
         initialiseDiscs();
-        UseBlockCallback.EVENT.register(this::jukeboxRightClickEvent);
+        JukeboxDiscUpdateCallback.EVENT.register(this::jukeboxDiscUpdateEvent);
     }
 
-    private ActionResult jukeboxRightClickEvent(PlayerEntity player, World world, Hand hand, BlockHitResult hitResult) {
-        // Ensure clientside & player is not in spectator mode
-        if (!world.isClient || player.isSpectator()) return net.minecraft.util.ActionResult.PASS;
-
-        BlockState state = world.getBlockState(hitResult.getBlockPos());
-
-        // Ensure right-clicked block is jukebox
-        if (!state.getBlock().equals(net.minecraft.block.Blocks.JUKEBOX)) return net.minecraft.util.ActionResult.PASS;
-
-        if (!state.get(net.minecraft.block.JukeboxBlock.HAS_RECORD)) {
-
-            // Ensure player is holding a disc
-            if (!isDisc(player.getStackInHand(hand))) return net.minecraft.util.ActionResult.PASS;
-
-            Disc disc = getDiscInHand(player, hand);
-
-            // Get all cats in range & set jamming info
-            for (CatEntity cat : getNearbyCats(hitResult.getBlockPos(), world)) {
-                CatMixinAccess catmix = (CatMixinAccess) cat;
-                catmix.setJammingInfo(hitResult.getBlockPos(), disc);
-            }
-
-        } else {
-
-            // Ensure player is not sneaking
-            if (player.isSneaking()) return net.minecraft.util.ActionResult.PASS;
-
+    private ActionResult jukeboxDiscUpdateEvent(World world, BlockPos jukeboxPos, @Nullable Disc disc) {
+        if (disc == null) {
             // Get all cats in range & remove jamming info
-            for (CatEntity cat : getNearbyCats(hitResult.getBlockPos(), world)) {
+            for (CatEntity cat : getNearbyCats(jukeboxPos, world)) {
                 CatMixinAccess catmix = (CatMixinAccess) cat;
-                catmix.setJammingInfo(hitResult.getBlockPos(), null);
+                catmix.setJammingInfo(jukeboxPos, null);
             }
-
+        } else {
+            // Get all cats in range & set jamming info
+            for (CatEntity cat : getNearbyCats(jukeboxPos, world)) {
+                CatMixinAccess catmix = (CatMixinAccess) cat;
+                catmix.setJammingInfo(jukeboxPos, disc);
+            }
         }
 
-        return net.minecraft.util.ActionResult.PASS;
-    }
-
-    private boolean isDisc(ItemStack stack) {
-        return stack.getItem() instanceof MusicDiscItem;
-    }
-
-    /**
-        * Get the disc in the player's hand, or a default disc if the disc is not recognised
-     */
-    private Disc getDiscInHand(PlayerEntity player, Hand hand) {
-        String discID = player.getStackInHand(hand).getItem().toString();
-        Disc disc = discManager.getDisc(discID);
-        if (disc != null) return disc;
-
-        LOGGER.warn("Playing unknown disc '" + discID + "' using default BPM and offset");
-        final int DEFAULT_BPM = 60;
-        final int DEFAULT_OFFSET = 0;
-        return new Disc(discID, DEFAULT_BPM, DEFAULT_OFFSET);
+        return ActionResult.PASS;
     }
 
     private List<CatEntity> getNearbyCats(BlockPos jukeboxPos, World world) {
