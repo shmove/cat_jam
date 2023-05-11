@@ -1,6 +1,6 @@
 package com.shmove.cat_jam.mixin;
 
-import com.shmove.cat_jam.helpers.CatMixinAccess;
+import com.shmove.cat_jam.helpers.CatEntityMixinAccess;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.model.ModelUtil;
 import net.minecraft.client.render.entity.model.CatEntityModel;
@@ -28,7 +28,7 @@ public class CatEntityModelMixin<T extends CatEntity> extends OcelotEntityModel<
 
     @Inject(method = "animateModel(Lnet/minecraft/entity/passive/CatEntity;FFF)V", at = @At("TAIL"))
     public void animateModel(T meow, float f, float g, float tickDelta, CallbackInfo ci) {
-        CatMixinAccess meowmix = (CatMixinAccess) meow;
+        CatEntityMixinAccess meowmix = (CatEntityMixinAccess) meow;
 
         if (!meow.isInSittingPose() && !meow.isInSleepingPose()) return;
 
@@ -42,7 +42,7 @@ public class CatEntityModelMixin<T extends CatEntity> extends OcelotEntityModel<
 
     @Inject(method = "setAngles(Lnet/minecraft/entity/passive/CatEntity;FFFFF)V", at = @At("TAIL"))
     public void setAngles(T meow, float f, float g, float animationProgress, float i, float j, CallbackInfo ci) {
-        CatMixinAccess meowmix = (CatMixinAccess) meow;
+        CatEntityMixinAccess meowmix = (CatEntityMixinAccess) meow;
         float tickDelta = animationProgress - meow.age;
 
         if (!meow.isInSittingPose() && !meow.isInSleepingPose()) return;

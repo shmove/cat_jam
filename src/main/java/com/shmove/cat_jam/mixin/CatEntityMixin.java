@@ -1,6 +1,6 @@
 package com.shmove.cat_jam.mixin;
 
-import com.shmove.cat_jam.helpers.CatMixinAccess;
+import com.shmove.cat_jam.helpers.CatEntityMixinAccess;
 import com.shmove.cat_jam.helpers.discs.DiscPlayback;
 import com.shmove.cat_jam.cat_jam;
 import com.shmove.cat_jam.helpers.discs.Disc;
@@ -17,7 +17,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(CatEntity.class)
-public class CatEntityMixin implements CatMixinAccess {
+public class CatEntityMixin implements CatEntityMixinAccess {
 
     @Unique
     private BlockPos jukebox = null;

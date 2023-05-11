@@ -1,7 +1,7 @@
 package com.shmove.cat_jam;
 
 import com.shmove.cat_jam.event.JukeboxDiscUpdateCallback;
-import com.shmove.cat_jam.helpers.CatMixinAccess;
+import com.shmove.cat_jam.helpers.CatEntityMixinAccess;
 import com.shmove.cat_jam.helpers.discs.Disc;
 import com.shmove.cat_jam.helpers.discs.DiscManager;
 import com.shmove.cat_jam.helpers.discs.DiscSegment;
@@ -43,13 +43,13 @@ public class cat_jam implements ModInitializer {
         if (disc == null) {
             // Get all cats in range & remove jamming info
             for (CatEntity cat : getNearbyCats(jukeboxPos, world)) {
-                CatMixinAccess catmix = (CatMixinAccess) cat;
+                CatEntityMixinAccess catmix = (CatEntityMixinAccess) cat;
                 catmix.setJammingInfo(jukeboxPos, null);
             }
         } else {
             // Get all cats in range & set jamming info
             for (CatEntity cat : getNearbyCats(jukeboxPos, world)) {
-                CatMixinAccess catmix = (CatMixinAccess) cat;
+                CatEntityMixinAccess catmix = (CatEntityMixinAccess) cat;
                 catmix.setJammingInfo(jukeboxPos, disc);
             }
         }
