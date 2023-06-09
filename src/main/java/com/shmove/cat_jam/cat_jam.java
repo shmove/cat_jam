@@ -188,6 +188,22 @@ public class cat_jam implements ModInitializer {
         );
         discManager.addDisc(new Disc("music_disc_pigstep", DISC_PIGSTEP_SEGMENTS, 1.35));
 
+        final List<DiscSegment> DISC_RELIC_SEGMENTS = List.of(
+                new DiscSegment(76, 5, NodType.SLIGHT),
+                new DiscSegment(36, 1, NodType.SLIGHT), // this section is a little weird due to song slowing down
+                new DiscSegment(68, 7, NodType.NONE),
+                new DiscSegment(68, 16, NodType.SLIGHT),
+                new DiscSegment(68, 14, NodType.SLIGHT_WITH_NORMAL_DOWNBEAT),
+                new DiscSegment(68, 4, NodType.NONE),
+                new DiscSegment(68, 27, NodType.SLIGHT),
+                new DiscSegment(68, 3, NodType.NONE),
+                new DiscSegment(68, 1),
+                new DiscSegment(68, 32, NodType.NORMAL_WITH_SLIGHT_ON_HALF),
+                new DiscSegment(68, 31),
+                new DiscSegment(68, -1, NodType.SLIGHT_WITH_NORMAL_DOWNBEAT)
+        );
+        discManager.addDisc(new Disc("music_disc_relic", DISC_RELIC_SEGMENTS, 4.1));
+
     }
 
 }

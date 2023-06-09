@@ -62,6 +62,10 @@ public class DiscPlayback {
         return ticksTilHalfBeat <= ticks;
     }
 
+    public int getBeat() {
+        return beat;
+    }
+
     public DiscSegment getCurrentSegment() {
         return disc.getSegment(segment);
     }

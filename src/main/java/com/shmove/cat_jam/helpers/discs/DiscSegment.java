@@ -6,7 +6,8 @@ public record DiscSegment(double bpm, int lengthInBeats, NodType nodType, double
         NONE,
         NORMAL,
         SLIGHT,
-        NORMAL_WITH_SLIGHT_ON_HALF
+        NORMAL_WITH_SLIGHT_ON_HALF,
+        SLIGHT_WITH_NORMAL_DOWNBEAT
     }
 
     public DiscSegment {

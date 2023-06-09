@@ -11,7 +11,7 @@
   "contact": {
     "issues": "https://github.com/shmove/cat_jam/issues",
     "sources": "https://github.com/shmove/cat_jam",
-    "discord": "@shmove#0615"
+    "discord": "@shmove"
   },
 
   "license": "CC-BY-NC-SA-4.0",
@@ -30,7 +30,7 @@
   "depends": {
     "fabricloader": ">=0.14.19",
     "fabric-api": "*",
-    "minecraft": "~1.19.4",
+    "minecraft": "~1.20",
     "java": ">=17"
   }
 }

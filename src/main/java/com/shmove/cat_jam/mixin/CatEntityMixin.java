@@ -35,10 +35,10 @@ public class CatEntityMixin implements CatEntityMixinAccess {
         CatEntity meow = (CatEntity) (Object) this;
 
         // Ensure clientside
-        if (!meow.world.isClient) return;
+        if (!meow.getWorld().isClient) return;
 
         // Lose interest if out of range / jukebox is broken
-        if (this.jukebox == null || !this.jukebox.isWithinDistance(meow.getPos(), cat_jam.JAM_RADIUS) || !meow.world.getBlockState(this.jukebox).getBlock().equals(Blocks.JUKEBOX))
+        if (this.jukebox == null || !this.jukebox.isWithinDistance(meow.getPos(), cat_jam.JAM_RADIUS) || !meow.getWorld().getBlockState(this.jukebox).getBlock().equals(Blocks.JUKEBOX))
             resetJammingInfo();
 
         if (catJamming) {
@@ -68,7 +68,13 @@ public class CatEntityMixin implements CatEntityMixinAccess {
     private void updateNod() {
 
         final boolean DISABLE_NOD = discPlayback.getCurrentSegment().nodType() == DiscSegment.NodType.NONE;
-        final boolean FORCE_SLIGHT_NOD = discPlayback.getCurrentSegment().nodType() == DiscSegment.NodType.SLIGHT;
+
+        final boolean SLIGHT_NODS_ONLY = discPlayback.getCurrentSegment().nodType() == DiscSegment.NodType.SLIGHT;
+
+        final boolean DOWNBEAT_NODS = discPlayback.getCurrentSegment().nodType() == DiscSegment.NodType.SLIGHT_WITH_NORMAL_DOWNBEAT;
+        final boolean IS_DOWNBEAT = discPlayback.getBeat() % 4 == 0; // assumes a time signature of 4/4
+
+        final boolean FORCE_SLIGHT_NOD = SLIGHT_NODS_ONLY || DOWNBEAT_NODS && !IS_DOWNBEAT;
         final boolean HALF_BEAT_NOD = discPlayback.getCurrentSegment().nodType() == DiscSegment.NodType.NORMAL_WITH_SLIGHT_ON_HALF;
 
         final boolean NOD_NOT_STARTED = nodTick == -1;
@@ -135,7 +141,7 @@ public class CatEntityMixin implements CatEntityMixinAccess {
             this.jukebox = jukeboxPosition;
             this.catJamming = true;
             this.discPlayback = new DiscPlayback(disc);
-            meow.world.addParticle(ParticleTypes.NOTE, meow.getX(), meow.getY() + 0.3, meow.getZ(), 0, 0, 0);
+            meow.getWorld().addParticle(ParticleTypes.NOTE, meow.getX(), meow.getY() + 0.3, meow.getZ(), 0, 0, 0);
 
         } else {
             resetJammingInfo();
