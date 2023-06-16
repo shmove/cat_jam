@@ -1,9 +1,9 @@
 package com.shmove.cat_jam.mixin;
 
-import com.shmove.cat_jam.helpers.CatEntityMixinAccess;
-import com.shmove.cat_jam.helpers.discs.DiscPlayback;
 import com.shmove.cat_jam.cat_jam;
+import com.shmove.cat_jam.helpers.CatEntityMixinAccess;
 import com.shmove.cat_jam.helpers.discs.Disc;
+import com.shmove.cat_jam.helpers.discs.DiscPlayback;
 import com.shmove.cat_jam.helpers.discs.DiscSegment;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.passive.CatEntity;
