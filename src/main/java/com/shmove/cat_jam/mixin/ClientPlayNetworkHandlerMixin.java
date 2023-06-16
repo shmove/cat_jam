@@ -33,7 +33,7 @@ public abstract class ClientPlayNetworkHandlerMixin implements TickablePacketLis
         final int DISC_EJECT_EVENT_ID = 1011;
 
         if (packet.getEventId() == DISC_INSERT_EVENT_ID) {
-            final String discID = Registries.ITEM.get(packet.getData()).toString();
+            final String discID = Registries.ITEM.getId(Registries.ITEM.get(packet.getData())).toString();
             final Disc disc = cat_jam.discManager.getDisc(discID);
             JukeboxDiscUpdateCallback.EVENT.invoker().update(world, pos, disc);
         }

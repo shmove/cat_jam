@@ -67,7 +67,7 @@ public class cat_jam implements ModInitializer {
      */
     private void initialiseDiscs() {
 
-        discManager.addDisc(new Disc("music_disc_13", 0, 0));
+        discManager.addDisc(new Disc("minecraft:music_disc_13", 0, 0));
 
         final List<DiscSegment> DISC_CAT_SEGMENTS = List.of(
                 new DiscSegment(112, 56, NodType.SLIGHT),
@@ -78,7 +78,7 @@ public class cat_jam implements ModInitializer {
                 new DiscSegment(112, 32, NodType.NONE),
                 new DiscSegment(112)
         );
-        discManager.addDisc(new Disc("music_disc_cat", DISC_CAT_SEGMENTS, 0));
+        discManager.addDisc(new Disc("minecraft:music_disc_cat", DISC_CAT_SEGMENTS, 0));
 
         final List<DiscSegment> DISC_BLOCKS_SEGMENTS = List.of(
                 new DiscSegment(110, 12, NodType.NONE),
@@ -100,7 +100,7 @@ public class cat_jam implements ModInitializer {
                 new DiscSegment(55, 4, NodType.SLIGHT),
                 new DiscSegment(110, -1, NodType.SLIGHT)
         );
-        discManager.addDisc(new Disc("music_disc_blocks", DISC_BLOCKS_SEGMENTS, 0));
+        discManager.addDisc(new Disc("minecraft:music_disc_blocks", DISC_BLOCKS_SEGMENTS, 0));
 
         final List<DiscSegment> DISC_CHIRP_SEGMENTS = List.of(
                 new DiscSegment(110, 128),
@@ -108,13 +108,13 @@ public class cat_jam implements ModInitializer {
                 new DiscSegment(110, 96),
                 new DiscSegment(110, -1, NodType.SLIGHT)
         );
-        discManager.addDisc(new Disc("music_disc_chirp", DISC_CHIRP_SEGMENTS, 0.25));
+        discManager.addDisc(new Disc("minecraft:music_disc_chirp", DISC_CHIRP_SEGMENTS, 0.25));
 
         final List<DiscSegment> DISC_FAR_SEGMENTS = List.of(
                 new DiscSegment(65, 8, NodType.NONE),
                 new DiscSegment(65)
         );
-        discManager.addDisc(new Disc("music_disc_far", DISC_FAR_SEGMENTS, 0));
+        discManager.addDisc(new Disc("minecraft:music_disc_far", DISC_FAR_SEGMENTS, 0));
 
         final List<DiscSegment> DISC_MALL_SEGMENTS = List.of(
                 new DiscSegment(115, 32, NodType.NONE),
@@ -126,24 +126,24 @@ public class cat_jam implements ModInitializer {
                 new DiscSegment(115, 32, NodType.SLIGHT),
                 new DiscSegment(115)
         );
-        discManager.addDisc(new Disc("music_disc_mall", DISC_MALL_SEGMENTS, 0));
+        discManager.addDisc(new Disc("minecraft:music_disc_mall", DISC_MALL_SEGMENTS, 0));
 
         final List<DiscSegment> DISC_MELLOHI_SEGMENTS = List.of(
                 new DiscSegment(45.5, -1, NodType.NORMAL_WITH_SLIGHT_ON_HALF)
         );
-        discManager.addDisc(new Disc("music_disc_mellohi", DISC_MELLOHI_SEGMENTS, 0));
+        discManager.addDisc(new Disc("minecraft:music_disc_mellohi", DISC_MELLOHI_SEGMENTS, 0));
 
         final List<DiscSegment> DISC_STAL_SEGMENTS = List.of(
                 new DiscSegment(52.5, -1, NodType.NORMAL_WITH_SLIGHT_ON_HALF)
         );
-        discManager.addDisc(new Disc("music_disc_stal", DISC_STAL_SEGMENTS, 0));
+        discManager.addDisc(new Disc("minecraft:music_disc_stal", DISC_STAL_SEGMENTS, 0));
 
         final List<DiscSegment> DISC_STRAD_SEGMENTS = List.of(
                 new DiscSegment(94, 68, NodType.SLIGHT),
                 new DiscSegment(94, 4, NodType.NONE),
                 new DiscSegment(94)
         );
-        discManager.addDisc(new Disc("music_disc_strad", DISC_STRAD_SEGMENTS, 0));
+        discManager.addDisc(new Disc("minecraft:music_disc_strad", DISC_STRAD_SEGMENTS, 0));
 
         final List<DiscSegment> DISC_WARD_SEGMENTS = List.of(
                 new DiscSegment(107, 32, NodType.SLIGHT),
@@ -156,9 +156,9 @@ public class cat_jam implements ModInitializer {
                 new DiscSegment(107, 16, NodType.SLIGHT),
                 new DiscSegment(107)
         );
-        discManager.addDisc(new Disc("music_disc_ward", DISC_WARD_SEGMENTS, 18));
+        discManager.addDisc(new Disc("minecraft:music_disc_ward", DISC_WARD_SEGMENTS, 18));
 
-        discManager.addDisc(new Disc("music_disc_11", 0, 0));
+        discManager.addDisc(new Disc("minecraft:music_disc_11", 0, 0));
 
         final List<DiscSegment> DISC_WAIT_SEGMENTS = List.of(
                 new DiscSegment(114, 16, NodType.SLIGHT),
@@ -169,7 +169,7 @@ public class cat_jam implements ModInitializer {
                 new DiscSegment(114, 28, NodType.SLIGHT),
                 new DiscSegment(114)
         );
-        discManager.addDisc(new Disc("music_disc_wait", DISC_WAIT_SEGMENTS, 0));
+        discManager.addDisc(new Disc("minecraft:music_disc_wait", DISC_WAIT_SEGMENTS, 0));
 
         final List<DiscSegment> DISC_OTHERSIDE_SEGMENTS = List.of(
                 new DiscSegment(92, 16, NodType.NONE),
@@ -177,16 +177,16 @@ public class cat_jam implements ModInitializer {
                 new DiscSegment(92, 1, NodType.NONE),
                 new DiscSegment(92)
         );
-        discManager.addDisc(new Disc("music_disc_otherside", DISC_OTHERSIDE_SEGMENTS, 0));
+        discManager.addDisc(new Disc("minecraft:music_disc_otherside", DISC_OTHERSIDE_SEGMENTS, 0));
 
-        discManager.addDisc(new Disc("music_disc_5", 0, 0));
+        discManager.addDisc(new Disc("minecraft:music_disc_5", 0, 0));
 
         final List<DiscSegment> DISC_PIGSTEP_SEGMENTS = List.of(
                 new DiscSegment(42.5, 16, NodType.SLIGHT),
                 new DiscSegment(85, 1, NodType.NONE),
                 new DiscSegment(85, -1)
         );
-        discManager.addDisc(new Disc("music_disc_pigstep", DISC_PIGSTEP_SEGMENTS, 1.35));
+        discManager.addDisc(new Disc("minecraft:music_disc_pigstep", DISC_PIGSTEP_SEGMENTS, 1.35));
 
         final List<DiscSegment> DISC_RELIC_SEGMENTS = List.of(
                 new DiscSegment(76, 5, NodType.SLIGHT),
@@ -202,7 +202,7 @@ public class cat_jam implements ModInitializer {
                 new DiscSegment(68, 31),
                 new DiscSegment(68, -1, NodType.SLIGHT_WITH_NORMAL_DOWNBEAT)
         );
-        discManager.addDisc(new Disc("music_disc_relic", DISC_RELIC_SEGMENTS, 4.1));
+        discManager.addDisc(new Disc("minecraft:music_disc_relic", DISC_RELIC_SEGMENTS, 4.1));
 
     }
 
