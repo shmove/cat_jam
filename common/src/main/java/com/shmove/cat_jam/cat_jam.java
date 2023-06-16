@@ -176,22 +176,6 @@ public class cat_jam {
         );
         discManager.addDisc(new Disc("minecraft:music_disc_pigstep", DISC_PIGSTEP_SEGMENTS, 1.35));
 
-        final List<DiscSegment> DISC_RELIC_SEGMENTS = java.util.List.of(
-                new DiscSegment(76, 5, DiscSegment.NodType.SLIGHT),
-                new DiscSegment(36, 1, DiscSegment.NodType.SLIGHT), // this section is a little weird due to song slowing down
-                new DiscSegment(68, 7, DiscSegment.NodType.NONE),
-                new DiscSegment(68, 16, DiscSegment.NodType.SLIGHT),
-                new DiscSegment(68, 14, DiscSegment.NodType.SLIGHT_WITH_NORMAL_DOWNBEAT),
-                new DiscSegment(68, 4, DiscSegment.NodType.NONE),
-                new DiscSegment(68, 27, DiscSegment.NodType.SLIGHT),
-                new DiscSegment(68, 3, DiscSegment.NodType.NONE),
-                new DiscSegment(68, 1),
-                new DiscSegment(68, 32, DiscSegment.NodType.NORMAL_WITH_SLIGHT_ON_HALF),
-                new DiscSegment(68, 31),
-                new DiscSegment(68, -1, DiscSegment.NodType.SLIGHT_WITH_NORMAL_DOWNBEAT)
-        );
-        discManager.addDisc(new Disc("minecraft:music_disc_relic", DISC_RELIC_SEGMENTS, 4.1));
-
     }
 
 }
