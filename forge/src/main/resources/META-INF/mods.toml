@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[45,)"
+loaderVersion = "[43,)"
 issueTrackerURL = "https://github.com/shmove/cat_jam/issues"
 license = "CC-BY-NC-SA-4.0"
 
@@ -10,18 +10,18 @@ displayName = "cat_jam"
 displayURL="https://github.com/shmove/cat_jam"
 authors = "shmove"
 description = '''makes cats jam to the rhythm of music discs :3'''
-logoFile = "assets/cat_jam/icon.png"
+logoFile = "icon.png"
 
 [[dependencies.cat_jam]]
 modId = "forge"
 mandatory = true
-versionRange = "[45,)"
+versionRange = "[43,)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.cat_jam]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.19.4,)"
+versionRange = "[1.19.2,1.19.3]"
 ordering = "NONE"
 side = "BOTH"
