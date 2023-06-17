@@ -167,8 +167,6 @@ public class cat_jam {
         );
         discManager.addDisc(new Disc("minecraft:music_disc_otherside", DISC_OTHERSIDE_SEGMENTS, 0));
 
-        discManager.addDisc(new Disc("minecraft:music_disc_5", 0, 0));
-
         final List<DiscSegment> DISC_PIGSTEP_SEGMENTS = java.util.List.of(
                 new DiscSegment(42.5, 16, DiscSegment.NodType.SLIGHT),
                 new DiscSegment(85, 1, DiscSegment.NodType.NONE),

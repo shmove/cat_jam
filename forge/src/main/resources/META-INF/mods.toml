@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[43,)"
+loaderVersion = "[40,)"
 issueTrackerURL = "https://github.com/shmove/cat_jam/issues"
 license = "CC-BY-NC-SA-4.0"
 
@@ -15,13 +15,13 @@ logoFile = "icon.png"
 [[dependencies.cat_jam]]
 modId = "forge"
 mandatory = true
-versionRange = "[43,)"
+versionRange = "[40,)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.cat_jam]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.19.2,1.19.3]"
+versionRange = "[1.18.2,1.19)"
 ordering = "NONE"
 side = "BOTH"
