@@ -1,9 +1,10 @@
 {
   "required": true,
-  "package": "com.shmove.cat_jam.mixin.fabric",
+  "package": "com.shmove.cat_jam.fabric.mixin",
   "compatibilityLevel": "JAVA_17",
   "minVersion": "0.8",
   "client": [
+    "compat.audioplayer.ALSpeakerBaseMixin"
   ],
   "mixins": [
   ],

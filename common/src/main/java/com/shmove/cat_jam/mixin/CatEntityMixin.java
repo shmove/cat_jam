@@ -115,8 +115,8 @@ public class CatEntityMixin implements CatEntityMixinAccess {
 
     public void resetJammingInfo() {
         this.jukebox = null;
-        this.catJamming = false;
         this.discPlayback = null;
+        this.catJamming = false;
 
         this.nodTick = -1;
         this.slightNodTick = -1;
@@ -139,8 +139,8 @@ public class CatEntityMixin implements CatEntityMixinAccess {
             if (disc.getSegment(0).bpm() == 0) return; // TODO: alternate anim for spooky discs??
 
             this.jukebox = jukeboxPosition;
-            this.catJamming = true;
             this.discPlayback = new DiscPlayback(disc);
+            this.catJamming = true;
             meow.getWorld().addParticle(ParticleTypes.NOTE, meow.getX(), meow.getY() + 0.3, meow.getZ(), 0, 0, 0);
 
         } else {
