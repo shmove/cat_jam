@@ -24,7 +24,6 @@ dependencies {
     modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
 
     modCompileOnly "de.maxhenkel.voicechat:voicechat-api:${rootProject.voicechat_api_version}"
-    modCompileOnly "maven.modrinth:simple-voice-chat:fabric-${rootProject.voicechat_mod_version}"
 
     common(project(path: ":common", configuration: "namedElements")) { transitive false }
     shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
