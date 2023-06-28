@@ -21,6 +21,9 @@
   "entrypoints": {
     "main": [
       "com.shmove.cat_jam.fabric.cat_jam_fabric"
+    ],
+    "voicechat": [
+      "com.shmove.cat_jam.fabric.compat.audioplayer.AudioPlayer"
     ]
   },
   "mixins": [
