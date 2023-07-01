@@ -67,15 +67,17 @@ public class CatEntityMixin implements CatEntityMixinAccess {
 
     private void updateNod() {
 
-        final boolean DISABLE_NOD = discPlayback.getCurrentSegment().nodType() == DiscSegment.NodType.NONE;
+        DiscSegment currentSegment = discPlayback.getCurrentSegment();
 
-        final boolean SLIGHT_NODS_ONLY = discPlayback.getCurrentSegment().nodType() == DiscSegment.NodType.SLIGHT;
+        final boolean DISABLE_NOD = currentSegment.nodType() == DiscSegment.NodType.NONE;
 
-        final boolean DOWNBEAT_NODS = discPlayback.getCurrentSegment().nodType() == DiscSegment.NodType.SLIGHT_WITH_NORMAL_DOWNBEAT;
-        final boolean IS_DOWNBEAT = discPlayback.getBeat() % 4 == 0; // assumes a time signature of 4/4
+        final boolean SLIGHT_NODS_ONLY = currentSegment.nodType() == DiscSegment.NodType.SLIGHT;
+
+        final boolean DOWNBEAT_NODS = currentSegment.nodType() == DiscSegment.NodType.SLIGHT_WITH_NORMAL_DOWNBEAT;
+        final boolean IS_DOWNBEAT = discPlayback.getBeat() % (currentSegment.beatsPerBar()) == 0;
 
         final boolean FORCE_SLIGHT_NOD = SLIGHT_NODS_ONLY || DOWNBEAT_NODS && !IS_DOWNBEAT;
-        final boolean HALF_BEAT_NOD = discPlayback.getCurrentSegment().nodType() == DiscSegment.NodType.NORMAL_WITH_SLIGHT_ON_HALF;
+        final boolean HALF_BEAT_NOD = currentSegment.nodType() == DiscSegment.NodType.NORMAL_WITH_SLIGHT_ON_HALF;
 
         final boolean NOD_NOT_STARTED = nodTick == -1;
         final boolean SLIGHT_NOD_NOT_STARTED = slightNodTick == -1;

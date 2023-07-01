@@ -1,6 +1,6 @@
 package com.shmove.cat_jam.helpers.discs;
 
-public record DiscSegment(double bpm, int lengthInBeats, NodType nodType, double beatTickInterval) {
+public record DiscSegment(double bpm, int lengthInBeats, NodType nodType, int beatsPerBar, double beatTickInterval) {
 
     public enum NodType {
         NONE,
@@ -20,7 +20,11 @@ public record DiscSegment(double bpm, int lengthInBeats, NodType nodType, double
     public DiscSegment(double bpm, int lengthInBeats) { this(bpm, lengthInBeats, NodType.NORMAL); }
 
     public DiscSegment(double bpm, int lengthInBeats, NodType nodType) {
-        this(bpm, lengthInBeats, nodType, getBeatTickInterval(bpm));
+        this(bpm, lengthInBeats, nodType, 4); // default 4/4
+    }
+
+    public DiscSegment(double bpm, int lengthInBeats, NodType nodType, int beatsPerBar) {
+        this(bpm, lengthInBeats, nodType, beatsPerBar, getBeatTickInterval(bpm));
     }
 
     private static double getBeatTickInterval(double bpm) {
