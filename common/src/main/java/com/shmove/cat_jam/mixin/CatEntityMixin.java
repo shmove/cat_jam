@@ -1,10 +1,9 @@
 package com.shmove.cat_jam.mixin;
 
 import com.shmove.cat_jam.cat_jam;
-import com.shmove.cat_jam.helpers.CatEntityMixinAccess;
+import com.shmove.cat_jam.helpers.JammingEntity;
 import com.shmove.cat_jam.helpers.discs.Disc;
 import com.shmove.cat_jam.helpers.discs.DiscPlayback;
-import com.shmove.cat_jam.helpers.discs.DiscSegment;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.particle.ParticleTypes;
@@ -17,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(CatEntity.class)
-public class CatEntityMixin implements CatEntityMixinAccess {
+public class CatEntityMixin implements JammingEntity {
 
     @Unique
     private BlockPos jukebox = null;
@@ -67,31 +66,13 @@ public class CatEntityMixin implements CatEntityMixinAccess {
 
     private void updateNod() {
 
-        DiscSegment currentSegment = discPlayback.getCurrentSegment();
-
-        final boolean DISABLE_NOD = currentSegment.nodType() == DiscSegment.NodType.NONE;
-
-        final boolean SLIGHT_NODS_ONLY = currentSegment.nodType() == DiscSegment.NodType.SLIGHT;
-
-        final boolean DOWNBEAT_NODS = currentSegment.nodType() == DiscSegment.NodType.SLIGHT_WITH_NORMAL_DOWNBEAT;
-        final boolean IS_DOWNBEAT = discPlayback.getBeat() % (currentSegment.beatsPerBar()) == 0;
-
-        final boolean FORCE_SLIGHT_NOD = SLIGHT_NODS_ONLY || DOWNBEAT_NODS && !IS_DOWNBEAT;
-        final boolean HALF_BEAT_NOD = currentSegment.nodType() == DiscSegment.NodType.NORMAL_WITH_SLIGHT_ON_HALF;
-
-        final boolean NOD_NOT_STARTED = nodTick == -1;
-        final boolean SLIGHT_NOD_NOT_STARTED = slightNodTick == -1;
-
-        if (DISABLE_NOD) return;
-
-        // start nod (early by two ticks)
-        if (discPlayback.anticipateBeat(2) && !FORCE_SLIGHT_NOD) {
-            if (NOD_NOT_STARTED) nodTick = 0;
+        if (discPlayback.anticipateBeat(2) && discPlayback.isNodBeat()) {
+            if (nodTick >= 0) return;
+            nodTick = 0;
         }
-
-        // start slight nod (early by one tick)
-        if (discPlayback.anticipateHalfBeat(1) && HALF_BEAT_NOD || discPlayback.anticipateBeat(1) && FORCE_SLIGHT_NOD) {
-            if (SLIGHT_NOD_NOT_STARTED) slightNodTick = 0;
+        else if (discPlayback.anticipateBeat(1) && discPlayback.isSlightNodBeat()) {
+            if (slightNodTick >= 0) return;
+            slightNodTick = 0;
         }
 
     }

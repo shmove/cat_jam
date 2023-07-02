@@ -8,7 +8,6 @@ public class DiscPlayback {
 
     private int offsetTicks;
     private int ticksTilBeat = 0; // immediate beat
-    private int ticksTilHalfBeat = -1;
 
     private double tickError = 0;
 
@@ -21,10 +20,9 @@ public class DiscPlayback {
         if (ticksTilBeat <= 0) {
             double v = disc.getSegment(segment).beatTickInterval();
             ticksTilBeat = (int) Math.floor(v);
-            ticksTilHalfBeat = (int) Math.floor(v / 2);
             tickError += v - ticksTilBeat; // accumulate error
             while (tickError >= 0.5) {
-                ticksTilBeat++; ticksTilHalfBeat++; // maintain <0.5t de-sync
+                ticksTilBeat++; // maintain <0.5t de-sync
                 tickError--;
             }
         }
@@ -32,7 +30,7 @@ public class DiscPlayback {
 
     public void tick() {
 
-        //cat_jam.LOGGER.info("playback tick | offsetTicks: " + offsetTicks + "; ticksTilBeat: " + ticksTilBeat + "; ticksTilHalfBeat: " + ticksTilHalfBeat + "; beat: " + beat + "; segment: " + segment);
+        // cat_jam.LOGGER.info("playback tick | offsetTicks: " + offsetTicks + "; ticksTilBeat: " + ticksTilBeat + "; beat: " + beat + "; nodType: " + disc.getSegment(segment).nodPattern().getNodType(beat) + "; segment: " + segment);
 
         if (offsetTicks > 0) {
             offsetTicks--;
@@ -48,7 +46,6 @@ public class DiscPlayback {
             setTicksToNextBeat();
         }
         ticksTilBeat--;
-        ticksTilHalfBeat--;
     }
 
     public boolean anticipateBeat(int ticks) {
@@ -56,18 +53,16 @@ public class DiscPlayback {
         return ticksTilBeat <= ticks;
     }
 
-    public boolean anticipateHalfBeat(int ticks) {
-        if (offsetTicks > 0) return false;
-        if (ticksTilHalfBeat < 0) return false;
-        return ticksTilHalfBeat <= ticks;
+    public boolean isNodBeat() {
+        return disc.getSegment(segment).nodPattern().getNodType(beat) == NodPattern.NOD_NORMAL;
     }
 
-    public int getBeat() {
-        return beat;
+    public boolean isSlightNodBeat() {
+        return disc.getSegment(segment).nodPattern().getNodType(beat) == NodPattern.NOD_SLIGHT;
     }
 
-    public DiscSegment getCurrentSegment() {
-        return disc.getSegment(segment);
+    public boolean isPauseBeat() {
+        return disc.getSegment(segment).nodPattern().getNodType(beat) == NodPattern.NOD_NONE;
     }
 
 }
