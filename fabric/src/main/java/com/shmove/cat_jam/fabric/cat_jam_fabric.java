@@ -1,6 +1,7 @@
 package com.shmove.cat_jam.fabric;
 
 import com.shmove.cat_jam.cat_jam;
+import com.shmove.cat_jam.fabric.compat.FabricMods;
 import com.shmove.cat_jam.fabric.compat.audioplayer.AudioPlayer;
 import com.shmove.cat_jam.helpers.discs.Disc;
 import com.shmove.cat_jam.helpers.discs.DiscManager;
@@ -19,8 +20,7 @@ public class cat_jam_fabric implements ModInitializer {
     public void onInitialize() {
         cat_jam.init();
 
-        final boolean AUDIO_PLAYER = FabricLoader.getInstance().isModLoaded("audioplayer");
-        if (AUDIO_PLAYER) ClientTickEvents.END_WORLD_TICK.register(AudioPlayer::tick);
+        if (FabricMods.AUDIO_PLAYER.isInstalled()) ClientTickEvents.END_WORLD_TICK.register(AudioPlayer::tick);
 
         initialiseModdedDiscs();
     }
@@ -29,12 +29,11 @@ public class cat_jam_fabric implements ModInitializer {
 
         // Mod List
 
-        final boolean AUDIO_PLAYER = FabricLoader.getInstance().isModLoaded("audioplayer");
         final boolean DISCS_WHERE_DISCS_SHOULDNT_BE = FabricLoader.getInstance().isModLoaded("dwdsb");
 
         // Modded Discs
 
-        if (AUDIO_PLAYER) discManager.addDisc(new Disc(AudioPlayer.CUSTOM_DISC_ID, DiscManager.DEFAULT_BPM, DiscManager.DEFAULT_OFFSET));
+        if (FabricMods.AUDIO_PLAYER.isInstalled()) discManager.addDisc(new Disc(AudioPlayer.CUSTOM_DISC_ID, DiscManager.DEFAULT_BPM, DiscManager.DEFAULT_OFFSET));
 
         if (DISCS_WHERE_DISCS_SHOULDNT_BE) {
 
