@@ -8,7 +8,6 @@ import com.shmove.cat_jam.helpers.discs.DiscManager;
 import com.shmove.cat_jam.helpers.discs.DiscSegment;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.fabricmc.loader.api.FabricLoader;
 
 import java.util.List;
 
@@ -27,15 +26,11 @@ public class cat_jam_fabric implements ModInitializer {
 
     private void initialiseModdedDiscs() {
 
-        // Mod List
-
-        final boolean DISCS_WHERE_DISCS_SHOULDNT_BE = FabricLoader.getInstance().isModLoaded("dwdsb");
-
         // Modded Discs
 
         if (FabricMods.AUDIO_PLAYER.isInstalled()) discManager.addDisc(new Disc(AudioPlayer.CUSTOM_DISC_ID, DiscManager.DEFAULT_BPM, DiscManager.DEFAULT_OFFSET));
 
-        if (DISCS_WHERE_DISCS_SHOULDNT_BE) {
+        if (FabricMods.DISCS_WHERE_DISCS_SHOULDNT_BE.isInstalled()) {
 
             final List<DiscSegment> DISC_WAVE_SEGMENTS = List.of(
                     new DiscSegment(60, 3, DiscSegment.NodType.SLIGHT),
