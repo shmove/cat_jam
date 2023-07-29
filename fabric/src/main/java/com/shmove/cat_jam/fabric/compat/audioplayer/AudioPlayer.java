@@ -4,8 +4,6 @@ import com.shmove.cat_jam.cat_jam;
 import de.maxhenkel.voicechat.api.VoicechatPlugin;
 import de.maxhenkel.voicechat.api.events.EventRegistration;
 import de.maxhenkel.voicechat.api.events.OpenALSoundEvent;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.world.ClientWorld;
 import net.minecraft.util.math.BlockPos;
 
 import java.util.ArrayList;
@@ -35,17 +33,17 @@ public class AudioPlayer implements VoicechatPlugin {
 
     public static void pingPos(BlockPos pos) {
         if (!playbackLiveliness.containsKey(pos))
-            cat_jam.jukeboxDiscUpdateEvent(MinecraftClient.getInstance().world, pos, cat_jam.discManager.getDisc(CUSTOM_DISC_ID));
+            cat_jam.addMusicSource(pos, cat_jam.discManager.getDisc(CUSTOM_DISC_ID));
         playbackLiveliness.put(pos, MAX_LIVELINESS); // refresh liveliness
     }
 
-    public static void tick(ClientWorld world) {
+    public static void tick() {
         for (BlockPos pos : new ArrayList<>(playbackLiveliness.keySet())) {
             if (playbackLiveliness.get(pos) > 0) {
                 playbackLiveliness.put(pos, playbackLiveliness.get(pos) - 1); // decrement liveliness
             } else {
                 playbackLiveliness.remove(pos); // remove if no longer playing
-                cat_jam.jukeboxDiscUpdateEvent(world, pos, null);
+                cat_jam.removeMusicSource(pos);
             }
         }
     }

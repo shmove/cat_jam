@@ -3,11 +3,9 @@ package com.shmove.cat_jam.mixin;
 import com.shmove.cat_jam.cat_jam;
 import com.shmove.cat_jam.helpers.JammingEntity;
 import com.shmove.cat_jam.helpers.discs.DiscPlayback;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class CatEntityMixin implements JammingEntity {
 
     @Unique
-    private BlockPos jukebox = null;
+    private BlockPos musicSource = null;
     @Unique
     private boolean catJamming = false;
     @Unique
@@ -35,14 +33,43 @@ public class CatEntityMixin implements JammingEntity {
         // Ensure clientside
         if (!meow.getWorld().isClient) return;
 
-        // Lose interest if out of range / jukebox is broken
-        if (this.jukebox == null || !this.jukebox.isWithinDistance(meow.getPos(), cat_jam.JAM_RADIUS) || !meow.getWorld().getBlockState(this.jukebox).getBlock().equals(Blocks.JUKEBOX))
+        // Lose interest if out of range / jukebox is broken / playback no longer being ticked
+        if (this.musicSource == null || !this.musicSource.isWithinDistance(meow.getPos(), cat_jam.JAM_RADIUS) || !cat_jam.isSourcePlayingAtPos(this.musicSource))
             resetJammingInfo();
+
+        // If not jamming, try to find a new music source
+        if (discPlayback == null && !catJamming) {
+            BlockPos nearbySource = cat_jam.getClosestListenableSourcePos(meow.getPos());
+            if (nearbySource != null) updateMusicSource(nearbySource);
+        }
 
         if (catJamming) {
             updateNod();
             updateNodAnim();
         }
+    }
+
+    @Override
+    public void resetJammingInfo() {
+        this.musicSource = null;
+        this.discPlayback = null;
+        this.catJamming = false;
+
+        this.nodTick = -1;
+        this.slightNodTick = -1;
+    }
+
+    @Override
+    public void updateMusicSource(BlockPos sourcePos) {
+        CatEntity meow = (CatEntity) (Object) this;
+
+        // Ensure cat is tame
+        if (!meow.isTamed()) return;
+
+        this.musicSource = sourcePos;
+        this.discPlayback = cat_jam.getDiscPlaybackAtPos(sourcePos);
+        this.catJamming = true;
+        meow.getWorld().addParticle(ParticleTypes.NOTE, meow.getX(), meow.getY() + 0.3, meow.getZ(), 0, 0, 0);
     }
 
     // This would be cool, but sound appears to only be played on the server
@@ -89,42 +116,6 @@ public class CatEntityMixin implements JammingEntity {
             // sustain slight nod for N ticks, then finish on Nth
             if (slightNodTick < (slightNodAnimTickLength - 1)) slightNodTick++;
             else if (slightNodTick == (slightNodAnimTickLength - 1)) slightNodTick = -1;
-        }
-
-    }
-
-    public void resetJammingInfo() {
-        this.jukebox = null;
-        this.discPlayback = null;
-        this.catJamming = false;
-
-        this.nodTick = -1;
-        this.slightNodTick = -1;
-    }
-
-    @Override
-    public void setJammingInfo(BlockPos jukeboxPosition, @Nullable DiscPlayback discPlayback) {
-
-        if (discPlayback != null && catJamming) return; // Don't override if already jamming
-        if (jukebox != null && !jukebox.equals(jukeboxPosition)) return; // Don't override if already listening to another jukebox
-        if (!catJamming && discPlayback == null) return; // Don't do anything if not jamming and disc is null
-
-        CatEntity meow = (CatEntity) (Object) this;
-
-        // Ensure cat is tame
-        if (!meow.isTamed()) return;
-
-        if (discPlayback != null) {
-
-            if (discPlayback.getDisc().getSegment(0).bpm() == 0) return; // TODO: alternate anim for spooky discs??
-
-            this.jukebox = jukeboxPosition;
-            this.discPlayback = discPlayback;
-            this.catJamming = true;
-            meow.getWorld().addParticle(ParticleTypes.NOTE, meow.getX(), meow.getY() + 0.3, meow.getZ(), 0, 0, 0);
-
-        } else {
-            resetJammingInfo();
         }
 
     }

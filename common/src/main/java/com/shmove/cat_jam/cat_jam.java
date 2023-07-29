@@ -1,12 +1,9 @@
 package com.shmove.cat_jam;
 
-import com.shmove.cat_jam.helpers.JammingEntity;
 import com.shmove.cat_jam.helpers.discs.*;
-import net.minecraft.entity.EntityType;
-import net.minecraft.entity.passive.CatEntity;
-import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
+import net.minecraft.util.math.MathHelper;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
@@ -32,39 +29,46 @@ public class cat_jam {
 
     public static void tickPlayingDiscs(World world) {
         for (Map.Entry<BlockPos, DiscPlayback> playingDisc : playingDiscs.entrySet()) {
-            if (blockEntityLoadedAtPos(world, playingDisc.getKey()))
+            if (isBlockEntityLoadedAtPos(world, playingDisc.getKey())) {
                 playingDisc.getValue().tick();
-            else
-                jukeboxDiscUpdateEvent(world, playingDisc.getKey(), null);
+            } else {
+                removeMusicSource(playingDisc.getKey());
+            }
         }
     }
 
-    private static boolean blockEntityLoadedAtPos(World world, BlockPos pos) {
+    public static void addMusicSource(BlockPos sourcePos, Disc disc) {
+        playingDiscs.put(sourcePos, new DiscPlayback(disc));
+    }
+
+    public static void removeMusicSource(BlockPos sourcePos) {
+        playingDiscs.remove(sourcePos);
+    }
+
+    @Nullable
+    public static BlockPos getClosestListenableSourcePos(Vec3d catPos) {
+        BlockPos closestPos = null;
+        double closestDistance = Double.MAX_VALUE;
+        for (BlockPos sourcePos : playingDiscs.keySet()) {
+            double distance = sourcePos.getSquaredDistance(catPos);
+            if (distance < closestDistance && distance < MathHelper.square(JAM_RADIUS)) {
+                closestPos = sourcePos;
+                closestDistance = distance;
+            }
+        }
+        return closestPos;
+    }
+
+    private static boolean isBlockEntityLoadedAtPos(World world, BlockPos pos) {
         return world.getBlockEntity(pos) != null; // not sure if this is the best way to do this, but World.isPosLoaded() works unexpectedly
     }
 
-    public static void jukeboxDiscUpdateEvent(World world, BlockPos jukeboxPos, @Nullable Disc disc) {
-        if (disc == null) {
-            // Get all cats in range & remove jamming info
-            for (CatEntity cat : getNearbyCats(jukeboxPos, world)) {
-                JammingEntity catmix = (JammingEntity) cat;
-                catmix.setJammingInfo(jukeboxPos, null);
-            }
-            playingDiscs.remove(jukeboxPos);
-        } else {
-            // Get all cats in range & set jamming info
-            DiscPlayback playback = new DiscPlayback(disc);
-            for (CatEntity cat : getNearbyCats(jukeboxPos, world)) {
-                JammingEntity catmix = (JammingEntity) cat;
-                catmix.setJammingInfo(jukeboxPos, playback);
-            }
-            playingDiscs.put(jukeboxPos, playback);
-        }
+    public static boolean isSourcePlayingAtPos(BlockPos sourcePos) {
+        return playingDiscs.containsKey(sourcePos);
     }
 
-    private static List<CatEntity> getNearbyCats(BlockPos jukeboxPos, World world) {
-        Box box = new Box(jukeboxPos).expand(JAM_RADIUS);
-        return world.getEntitiesByType(EntityType.CAT, box, EntityPredicates.VALID_LIVING_ENTITY);
+    public static DiscPlayback getDiscPlaybackAtPos(BlockPos sourcePos) {
+        return playingDiscs.get(sourcePos);
     }
 
     /**
