@@ -24,6 +24,7 @@
     ]
   },
   "mixins": [
+    "cat_jam.mixins.json",
     "cat_jam-common.mixins.json"
   ],
 
