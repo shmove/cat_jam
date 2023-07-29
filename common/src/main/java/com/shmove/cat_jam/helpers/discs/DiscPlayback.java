@@ -65,4 +65,8 @@ public class DiscPlayback {
         return disc.getSegment(segment).nodPattern().getNodType(beat) == NodPattern.NOD_NONE;
     }
 
+    public Disc getDisc() {
+        return disc;
+    }
+
 }

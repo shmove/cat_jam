@@ -2,7 +2,6 @@ package com.shmove.cat_jam.mixin;
 
 import com.shmove.cat_jam.cat_jam;
 import com.shmove.cat_jam.helpers.JammingEntity;
-import com.shmove.cat_jam.helpers.discs.Disc;
 import com.shmove.cat_jam.helpers.discs.DiscPlayback;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.passive.CatEntity;
@@ -43,8 +42,6 @@ public class CatEntityMixin implements JammingEntity {
         if (catJamming) {
             updateNod();
             updateNodAnim();
-
-            discPlayback.tick(); // tick disc playback
         }
     }
 
@@ -106,23 +103,23 @@ public class CatEntityMixin implements JammingEntity {
     }
 
     @Override
-    public void setJammingInfo(BlockPos jukeboxPosition, @Nullable Disc disc) {
+    public void setJammingInfo(BlockPos jukeboxPosition, @Nullable DiscPlayback discPlayback) {
 
-        if (disc != null && catJamming) return; // Don't override if already jamming
+        if (discPlayback != null && catJamming) return; // Don't override if already jamming
         if (jukebox != null && !jukebox.equals(jukeboxPosition)) return; // Don't override if already listening to another jukebox
-        if (!catJamming && disc == null) return; // Don't do anything if not jamming and disc is null
+        if (!catJamming && discPlayback == null) return; // Don't do anything if not jamming and disc is null
 
         CatEntity meow = (CatEntity) (Object) this;
 
         // Ensure cat is tame
         if (!meow.isTamed()) return;
 
-        if (disc != null) {
+        if (discPlayback != null) {
 
-            if (disc.getSegment(0).bpm() == 0) return; // TODO: alternate anim for spooky discs??
+            if (discPlayback.getDisc().getSegment(0).bpm() == 0) return; // TODO: alternate anim for spooky discs??
 
             this.jukebox = jukeboxPosition;
-            this.discPlayback = new DiscPlayback(disc);
+            this.discPlayback = discPlayback;
             this.catJamming = true;
             meow.getWorld().addParticle(ParticleTypes.NOTE, meow.getX(), meow.getY() + 0.3, meow.getZ(), 0, 0, 0);
 

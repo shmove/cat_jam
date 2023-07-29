@@ -1,10 +1,7 @@
 package com.shmove.cat_jam;
 
 import com.shmove.cat_jam.helpers.JammingEntity;
-import com.shmove.cat_jam.helpers.discs.Disc;
-import com.shmove.cat_jam.helpers.discs.DiscManager;
-import com.shmove.cat_jam.helpers.discs.DiscSegment;
-import com.shmove.cat_jam.helpers.discs.NodPattern;
+import com.shmove.cat_jam.helpers.discs.*;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.predicate.entity.EntityPredicates;
@@ -15,19 +12,35 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class cat_jam {
 
     public static final String MOD_ID = "cat_jam";
 
     public static final DiscManager discManager = new DiscManager();
+    private static final HashMap<BlockPos, DiscPlayback> playingDiscs = new HashMap<>();
     public static final double JAM_RADIUS = 3.46D;
 
-    public static final Logger LOGGER = LoggerFactory.getLogger("cat_jam");
+    public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
 
     public static void init() {
         initialiseDiscs();
+    }
+
+    public static void tickPlayingDiscs(World world) {
+        for (Map.Entry<BlockPos, DiscPlayback> playingDisc : playingDiscs.entrySet()) {
+            if (blockEntityLoadedAtPos(world, playingDisc.getKey()))
+                playingDisc.getValue().tick();
+            else
+                jukeboxDiscUpdateEvent(world, playingDisc.getKey(), null);
+        }
+    }
+
+    private static boolean blockEntityLoadedAtPos(World world, BlockPos pos) {
+        return world.getBlockEntity(pos) != null; // not sure if this is the best way to do this, but World.isPosLoaded() works unexpectedly
     }
 
     public static void jukeboxDiscUpdateEvent(World world, BlockPos jukeboxPos, @Nullable Disc disc) {
@@ -37,12 +50,15 @@ public class cat_jam {
                 JammingEntity catmix = (JammingEntity) cat;
                 catmix.setJammingInfo(jukeboxPos, null);
             }
+            playingDiscs.remove(jukeboxPos);
         } else {
             // Get all cats in range & set jamming info
+            DiscPlayback playback = new DiscPlayback(disc);
             for (CatEntity cat : getNearbyCats(jukeboxPos, world)) {
                 JammingEntity catmix = (JammingEntity) cat;
-                catmix.setJammingInfo(jukeboxPos, disc);
+                catmix.setJammingInfo(jukeboxPos, playback);
             }
+            playingDiscs.put(jukeboxPos, playback);
         }
     }
 

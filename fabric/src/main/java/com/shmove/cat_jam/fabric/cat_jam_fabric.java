@@ -22,6 +22,7 @@ public class cat_jam_fabric implements ModInitializer {
 
         if (FabricMods.AUDIO_PLAYER.isInstalled()) ClientTickEvents.END_WORLD_TICK.register(AudioPlayer::tick);
 
+        ClientTickEvents.END_WORLD_TICK.register(cat_jam::tickPlayingDiscs);
         initialiseModdedDiscs();
     }
 
