@@ -3,6 +3,7 @@ package com.shmove.cat_jam.mixin;
 import com.shmove.cat_jam.cat_jam;
 import com.shmove.cat_jam.helpers.JammingEntity;
 import com.shmove.cat_jam.helpers.discs.DiscPlayback;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.util.math.BlockPos;
@@ -16,7 +17,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class CatEntityMixin implements JammingEntity {
 
     @Unique
-    private BlockPos musicSource = null;
+    private BlockPos musicSourceBlock = null;
+    @Unique
+    private Entity musicSourceEntity = null;
     @Unique
     private boolean catJamming = false;
     @Unique
@@ -33,15 +36,21 @@ public class CatEntityMixin implements JammingEntity {
         // Ensure clientside
         if (!meow.getWorld().isClient) return;
 
-        // Lose interest if out of range / jukebox is broken / playback no longer being ticked
-        if (this.musicSource == null || !this.musicSource.isWithinDistance(meow.getPos(), cat_jam.JAM_RADIUS) || !cat_jam.isSourcePlayingAtPos(this.musicSource))
-            resetJammingInfo();
+        if (this.musicSourceBlock != null) {
+            // Lose interest if out of range / playback no longer being ticked
+            if (!this.musicSourceBlock.isWithinDistance(meow.getPos(), cat_jam.JAM_RADIUS) || !cat_jam.isSourcePlayingAtPos(this.musicSourceBlock))
+                resetJammingInfo();
+        }
+
+        if (this.musicSourceEntity != null) {
+            // Lose interest if out of range / entity is dead / playback no longer being ticked
+            if (!this.musicSourceEntity.isInRange(meow, cat_jam.JAM_RADIUS) || !this.musicSourceEntity.isAlive() || !cat_jam.isSourcePlayingFromEntity(this.musicSourceEntity))
+                resetJammingInfo();
+        }
 
         // If not jamming, try to find a new music source
-        if (discPlayback == null && !catJamming) {
-            BlockPos nearbySource = cat_jam.getClosestListenableSourcePos(meow.getPos());
-            if (nearbySource != null) updateMusicSource(nearbySource);
-        }
+        if (!catJamming)
+            findNewMusicSource();
 
         if (catJamming) {
             updateNod();
@@ -51,12 +60,42 @@ public class CatEntityMixin implements JammingEntity {
 
     @Override
     public void resetJammingInfo() {
-        this.musicSource = null;
+        this.musicSourceBlock = null;
+        this.musicSourceEntity = null;
         this.discPlayback = null;
         this.catJamming = false;
 
         this.nodTick = -1;
         this.slightNodTick = -1;
+    }
+
+    private void findNewMusicSource() {
+        CatEntity meow = (CatEntity) (Object) this;
+
+        BlockPos nearbyBlockSource = cat_jam.getClosestListenableSourcePos(meow.getPos());
+        Entity nearbyEntitySource = cat_jam.getClosestListenableSourceEntity(meow.getPos());
+
+        final boolean FOUND_BLOCK_SOURCE = nearbyBlockSource != null;
+        final boolean FOUND_ENTITY_SOURCE = nearbyEntitySource != null;
+
+        if (!FOUND_BLOCK_SOURCE && !FOUND_ENTITY_SOURCE) return;
+
+        if (FOUND_BLOCK_SOURCE && FOUND_ENTITY_SOURCE) {
+            // Set to closer source
+            double blockDist = nearbyBlockSource.getSquaredDistance(meow.getPos());
+            double entityDist = nearbyEntitySource.squaredDistanceTo(meow);
+            if (blockDist < entityDist) {
+                updateMusicSource(nearbyBlockSource);
+            }
+            else {
+                updateMusicSource(nearbyEntitySource);
+            }
+        } else if (FOUND_BLOCK_SOURCE) {
+            updateMusicSource(nearbyBlockSource);
+        } else if (FOUND_ENTITY_SOURCE) {
+            updateMusicSource(nearbyEntitySource);
+        }
+
     }
 
     @Override
@@ -66,8 +105,21 @@ public class CatEntityMixin implements JammingEntity {
         // Ensure cat is tame
         if (!meow.isTamed()) return;
 
-        this.musicSource = sourcePos;
+        this.musicSourceBlock = sourcePos;
         this.discPlayback = cat_jam.getDiscPlaybackAtPos(sourcePos);
+        this.catJamming = true;
+        meow.getWorld().addParticle(ParticleTypes.NOTE, meow.getX(), meow.getY() + 0.3, meow.getZ(), 0, 0, 0);
+    }
+
+    @Override
+    public void updateMusicSource(Entity sourceEntity) {
+        CatEntity meow = (CatEntity) (Object) this;
+
+        // Ensure cat is tame
+        if (!meow.isTamed()) return;
+
+        this.musicSourceEntity = sourceEntity;
+        this.discPlayback = cat_jam.getDiscPlaybackFromEntity(sourceEntity);
         this.catJamming = true;
         meow.getWorld().addParticle(ParticleTypes.NOTE, meow.getX(), meow.getY() + 0.3, meow.getZ(), 0, 0, 0);
     }

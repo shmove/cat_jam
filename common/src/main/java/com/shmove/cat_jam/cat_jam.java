@@ -1,6 +1,7 @@
 package com.shmove.cat_jam;
 
 import com.shmove.cat_jam.helpers.discs.*;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -18,7 +19,8 @@ public class cat_jam {
     public static final String MOD_ID = "cat_jam";
 
     public static final DiscManager discManager = new DiscManager();
-    private static final HashMap<BlockPos, DiscPlayback> playingDiscs = new HashMap<>();
+    private static final HashMap<BlockPos, DiscPlayback> musicSourceBlocks = new HashMap<>();
+    private static final HashMap<Entity, DiscPlayback> musicSourceEntities = new HashMap<>();
     public static final double JAM_RADIUS = 3.46D;
 
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
@@ -28,28 +30,46 @@ public class cat_jam {
     }
 
     public static void tickPlayingDiscs(World world) {
-        for (Map.Entry<BlockPos, DiscPlayback> playingDisc : playingDiscs.entrySet()) {
+
+        for (Map.Entry<BlockPos, DiscPlayback> playingDisc : musicSourceBlocks.entrySet()) {
             if (isBlockEntityLoadedAtPos(world, playingDisc.getKey())) {
                 playingDisc.getValue().tick();
             } else {
                 removeMusicSource(playingDisc.getKey());
             }
         }
+
+        for (Map.Entry<Entity, DiscPlayback> playingDisc : musicSourceEntities.entrySet()) {
+            if (world.getEntityById(playingDisc.getKey().getId()) != null) {
+                playingDisc.getValue().tick();
+            } else {
+                removeMusicSource(playingDisc.getKey());
+            }
+        }
+
     }
 
     public static void addMusicSource(BlockPos sourcePos, Disc disc) {
-        playingDiscs.put(sourcePos, new DiscPlayback(disc));
+        musicSourceBlocks.put(sourcePos, new DiscPlayback(disc));
+    }
+
+    public static void addMusicSource(Entity sourceEntity, Disc disc) {
+        musicSourceEntities.put(sourceEntity, new DiscPlayback(disc));
     }
 
     public static void removeMusicSource(BlockPos sourcePos) {
-        playingDiscs.remove(sourcePos);
+        musicSourceBlocks.remove(sourcePos);
+    }
+
+    public static void removeMusicSource(Entity sourceEntity) {
+        musicSourceEntities.remove(sourceEntity);
     }
 
     @Nullable
     public static BlockPos getClosestListenableSourcePos(Vec3d catPos) {
         BlockPos closestPos = null;
         double closestDistance = Double.MAX_VALUE;
-        for (BlockPos sourcePos : playingDiscs.keySet()) {
+        for (BlockPos sourcePos : musicSourceBlocks.keySet()) {
             double distance = sourcePos.getSquaredDistance(catPos);
             if (distance < closestDistance && distance < MathHelper.square(JAM_RADIUS)) {
                 closestPos = sourcePos;
@@ -59,16 +79,38 @@ public class cat_jam {
         return closestPos;
     }
 
+    @Nullable
+    public static Entity getClosestListenableSourceEntity(Vec3d catPos) {
+        Entity closestEntity = null;
+        double closestDistance = Double.MAX_VALUE;
+        for (Entity sourceEntity : musicSourceEntities.keySet()) {
+            double distance = sourceEntity.getPos().squaredDistanceTo(catPos);
+            if (distance < closestDistance && distance < MathHelper.square(JAM_RADIUS)) {
+                closestEntity = sourceEntity;
+                closestDistance = distance;
+            }
+        }
+        return closestEntity;
+    }
+
     private static boolean isBlockEntityLoadedAtPos(World world, BlockPos pos) {
         return world.getBlockEntity(pos) != null; // not sure if this is the best way to do this, but World.isPosLoaded() works unexpectedly
     }
 
     public static boolean isSourcePlayingAtPos(BlockPos sourcePos) {
-        return playingDiscs.containsKey(sourcePos);
+        return musicSourceBlocks.containsKey(sourcePos);
+    }
+
+    public static boolean isSourcePlayingFromEntity(Entity sourceEntity) {
+        return musicSourceEntities.containsKey(sourceEntity);
     }
 
     public static DiscPlayback getDiscPlaybackAtPos(BlockPos sourcePos) {
-        return playingDiscs.get(sourcePos);
+        return musicSourceBlocks.get(sourcePos);
+    }
+
+    public static DiscPlayback getDiscPlaybackFromEntity(Entity sourceEntity) {
+        return musicSourceEntities.get(sourceEntity);
     }
 
     /**
