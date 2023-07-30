@@ -1,6 +1,5 @@
 package com.shmove.cat_jam.helpers;
 
-import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 
 public interface JammingEntity {
@@ -9,7 +8,7 @@ public interface JammingEntity {
 
     void updateMusicSource(BlockPos sourcePos);
 
-    void updateMusicSource(Entity sourceEntity);
+    void updateMusicSource(Integer sourceEntityID);
 
     int getNodTick();
 
