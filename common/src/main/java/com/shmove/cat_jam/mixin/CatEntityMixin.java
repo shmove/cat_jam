@@ -19,7 +19,7 @@ public class CatEntityMixin implements JammingEntity {
     @Unique
     private BlockPos musicSourceBlock = null;
     @Unique
-    private Entity musicSourceEntity = null;
+    private Integer musicSourceEntityID = null;
     @Unique
     private boolean catJamming = false;
     @Unique
@@ -42,9 +42,10 @@ public class CatEntityMixin implements JammingEntity {
                 resetJammingInfo();
         }
 
-        if (this.musicSourceEntity != null) {
+        if (this.musicSourceEntityID != null) {
             // Lose interest if out of range / entity is dead / playback no longer being ticked
-            if (!this.musicSourceEntity.isInRange(meow, cat_jam.JAM_RADIUS) || !this.musicSourceEntity.isAlive() || !cat_jam.isSourcePlayingFromEntity(this.musicSourceEntity))
+            Entity musicSourceEntity = meow.getWorld().getEntityById(this.musicSourceEntityID);
+            if (musicSourceEntity == null || !musicSourceEntity.isInRange(meow, cat_jam.JAM_RADIUS) || !musicSourceEntity.isAlive() || !cat_jam.isSourcePlayingFromEntity(this.musicSourceEntityID))
                 resetJammingInfo();
         }
 
@@ -61,7 +62,7 @@ public class CatEntityMixin implements JammingEntity {
     @Override
     public void resetJammingInfo() {
         this.musicSourceBlock = null;
-        this.musicSourceEntity = null;
+        this.musicSourceEntityID = null;
         this.discPlayback = null;
         this.catJamming = false;
 
@@ -88,12 +89,12 @@ public class CatEntityMixin implements JammingEntity {
                 updateMusicSource(nearbyBlockSource);
             }
             else {
-                updateMusicSource(nearbyEntitySource);
+                updateMusicSource(nearbyEntitySource.getId());
             }
         } else if (FOUND_BLOCK_SOURCE) {
             updateMusicSource(nearbyBlockSource);
         } else if (FOUND_ENTITY_SOURCE) {
-            updateMusicSource(nearbyEntitySource);
+            updateMusicSource(nearbyEntitySource.getId());
         }
 
     }
@@ -112,14 +113,14 @@ public class CatEntityMixin implements JammingEntity {
     }
 
     @Override
-    public void updateMusicSource(Entity sourceEntity) {
+    public void updateMusicSource(Integer sourceEntityID) {
         CatEntity meow = (CatEntity) (Object) this;
 
         // Ensure cat is tame
         if (!meow.isTamed()) return;
 
-        this.musicSourceEntity = sourceEntity;
-        this.discPlayback = cat_jam.getDiscPlaybackFromEntity(sourceEntity);
+        this.musicSourceEntityID = sourceEntityID;
+        this.discPlayback = cat_jam.getDiscPlaybackFromEntity(sourceEntityID);
         this.catJamming = true;
         meow.getWorld().addParticle(ParticleTypes.NOTE, meow.getX(), meow.getY() + 0.3, meow.getZ(), 0, 0, 0);
     }

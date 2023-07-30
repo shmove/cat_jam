@@ -1,6 +1,7 @@
 package com.shmove.cat_jam;
 
 import com.shmove.cat_jam.helpers.discs.*;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
@@ -20,7 +21,7 @@ public class cat_jam {
 
     public static final DiscManager discManager = new DiscManager();
     private static final HashMap<BlockPos, DiscPlayback> musicSourceBlocks = new HashMap<>();
-    private static final HashMap<Entity, DiscPlayback> musicSourceEntities = new HashMap<>();
+    private static final HashMap<Integer, DiscPlayback> musicSourceEntities = new HashMap<>();
     public static final double JAM_RADIUS = 3.46D;
 
     public static final Logger LOGGER = LoggerFactory.getLogger(MOD_ID);
@@ -39,8 +40,8 @@ public class cat_jam {
             }
         }
 
-        for (Map.Entry<Entity, DiscPlayback> playingDisc : musicSourceEntities.entrySet()) {
-            if (world.getEntityById(playingDisc.getKey().getId()) != null) {
+        for (Map.Entry<Integer, DiscPlayback> playingDisc : musicSourceEntities.entrySet()) {
+            if (world.getEntityById(playingDisc.getKey()) != null) {
                 playingDisc.getValue().tick();
             } else {
                 removeMusicSource(playingDisc.getKey());
@@ -53,16 +54,16 @@ public class cat_jam {
         musicSourceBlocks.put(sourcePos, new DiscPlayback(disc));
     }
 
-    public static void addMusicSource(Entity sourceEntity, Disc disc) {
-        musicSourceEntities.put(sourceEntity, new DiscPlayback(disc));
+    public static void addMusicSource(Integer sourceEntityID, Disc disc) {
+        musicSourceEntities.put(sourceEntityID, new DiscPlayback(disc));
     }
 
     public static void removeMusicSource(BlockPos sourcePos) {
         musicSourceBlocks.remove(sourcePos);
     }
 
-    public static void removeMusicSource(Entity sourceEntity) {
-        musicSourceEntities.remove(sourceEntity);
+    public static void removeMusicSource(Integer sourceEntityID) {
+        musicSourceEntities.remove(sourceEntityID);
     }
 
     @Nullable
@@ -81,15 +82,24 @@ public class cat_jam {
 
     @Nullable
     public static Entity getClosestListenableSourceEntity(Vec3d catPos) {
+        World world = MinecraftClient.getInstance().world;
+        if (world == null) return null;
+
         Entity closestEntity = null;
         double closestDistance = Double.MAX_VALUE;
-        for (Entity sourceEntity : musicSourceEntities.keySet()) {
+        for (Integer sourceEntityID : musicSourceEntities.keySet()) {
+
+            Entity sourceEntity = world.getEntityById(sourceEntityID);
+            if (sourceEntity == null) continue;
+
             double distance = sourceEntity.getPos().squaredDistanceTo(catPos);
             if (distance < closestDistance && distance < MathHelper.square(JAM_RADIUS)) {
                 closestEntity = sourceEntity;
                 closestDistance = distance;
             }
+
         }
+
         return closestEntity;
     }
 
@@ -101,16 +111,16 @@ public class cat_jam {
         return musicSourceBlocks.containsKey(sourcePos);
     }
 
-    public static boolean isSourcePlayingFromEntity(Entity sourceEntity) {
-        return musicSourceEntities.containsKey(sourceEntity);
+    public static boolean isSourcePlayingFromEntity(Integer sourceEntityID) {
+        return musicSourceEntities.containsKey(sourceEntityID);
     }
 
     public static DiscPlayback getDiscPlaybackAtPos(BlockPos sourcePos) {
         return musicSourceBlocks.get(sourcePos);
     }
 
-    public static DiscPlayback getDiscPlaybackFromEntity(Entity sourceEntity) {
-        return musicSourceEntities.get(sourceEntity);
+    public static DiscPlayback getDiscPlaybackFromEntity(Integer sourceEntityID) {
+        return musicSourceEntities.get(sourceEntityID);
     }
 
     /**
