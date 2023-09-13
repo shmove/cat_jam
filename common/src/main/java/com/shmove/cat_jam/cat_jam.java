@@ -50,6 +50,11 @@ public class cat_jam {
 
     }
 
+    public static void clearPlayingDiscs() {
+        musicSourceBlocks.clear();
+        musicSourceEntities.clear();
+    }
+
     public static void addMusicSource(BlockPos sourcePos, Disc disc) {
         musicSourceBlocks.put(sourcePos, new DiscPlayback(disc));
     }
@@ -104,6 +109,7 @@ public class cat_jam {
     }
 
     private static boolean isBlockEntityLoadedAtPos(World world, BlockPos pos) {
+        if (world == null) return false;
         return world.getBlockEntity(pos) != null; // not sure if this is the best way to do this, but World.isPosLoaded() works unexpectedly
     }
 

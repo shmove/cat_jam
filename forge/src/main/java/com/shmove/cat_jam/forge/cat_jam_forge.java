@@ -26,7 +26,7 @@ public class cat_jam_forge {
     }
 
     @SubscribeEvent
-    public static void onClientTickEnd(TickEvent.ClientTickEvent event) {
+    public static void onServerTickEnd(TickEvent.ServerTickEvent event) {
         if (event.phase == TickEvent.Phase.END)
             cat_jam.tickPlayingDiscs(MinecraftClient.getInstance().world);
     }
