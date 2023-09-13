@@ -8,6 +8,7 @@ import com.shmove.cat_jam.helpers.discs.DiscSegment;
 import com.shmove.cat_jam.helpers.discs.NodPattern;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class cat_jam_fabric implements ModInitializer {
         cat_jam.init();
 
         ClientTickEvents.END_WORLD_TICK.register(cat_jam::tickPlayingDiscs);
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> cat_jam.clearPlayingDiscs());
         initialiseModdedDiscs();
     }
 
