@@ -389,7 +389,7 @@ public class cat_jam {
                 new DiscSegment(68, 1, NodPattern.NONE),
                 new DiscSegment(68, 1, NodPattern.SLIGHT),
                 new DiscSegment(68, 3, NodPattern.NONE),
-                new DiscSegment(68 * 2, 62, new NodPattern("x_X_xxX_")),
+                new DiscSegment(68 * 2, 62, new NodPattern("XxX_xxX_")),
                 new DiscSegment(68, 1, NodPattern.NONE),
                 new DiscSegment(68 * 2, 64, new NodPattern("xxxX")),
                 new DiscSegment(68, 8, new NodPattern("xX__")),
