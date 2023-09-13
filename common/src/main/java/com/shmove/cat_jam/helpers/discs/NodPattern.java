@@ -11,6 +11,8 @@ public class NodPattern {
     public static final NodPattern NORMAL = new NodPattern("X");
     public static final NodPattern SLIGHT = new NodPattern("x");
     public static final NodPattern SLIGHT_NORMAL_ALTERNATING = new NodPattern("xX");
+    public static final NodPattern NORMAL_SLIGHT_ALTERNATING = new NodPattern("Xx");
+    public static final NodPattern DOWNBEAT8 = new NodPattern("Xxxxxxxx");
     public static final NodPattern DOWNBEAT4 = new NodPattern("Xxxx");
     public static final NodPattern DOWNBEAT3 = new NodPattern("Xxx");
 
