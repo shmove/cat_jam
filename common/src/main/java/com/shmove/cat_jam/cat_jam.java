@@ -55,11 +55,17 @@ public class cat_jam {
         musicSourceEntities.clear();
     }
 
+    private static boolean shouldIgnoreDiscPlayback(Disc disc) {
+        return disc.getSegment(0).bpm() == 0;
+    }
+
     public static void addMusicSource(BlockPos sourcePos, Disc disc) {
+        if (shouldIgnoreDiscPlayback(disc)) return;
         musicSourceBlocks.put(sourcePos, new DiscPlayback(disc));
     }
 
     public static void addMusicSource(Integer sourceEntityID, Disc disc) {
+        if (shouldIgnoreDiscPlayback(disc)) return;
         musicSourceEntities.put(sourceEntityID, new DiscPlayback(disc));
     }
 
