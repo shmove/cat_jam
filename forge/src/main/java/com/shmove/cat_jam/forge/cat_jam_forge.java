@@ -8,7 +8,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.common.Mod;
 
@@ -27,8 +26,8 @@ public class cat_jam_forge {
     }
 
     @SubscribeEvent
-    public static void onClientWorldTickEnd(TickEvent.LevelTickEvent event) {
-        if (event.side == LogicalSide.CLIENT && event.phase == TickEvent.Phase.END)
+    public static void onServerTickEnd(TickEvent.ServerTickEvent event) {
+        if (event.phase == TickEvent.Phase.END)
             cat_jam.tickPlayingDiscs(MinecraftClient.getInstance().world);
     }
 
