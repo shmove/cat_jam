@@ -37,7 +37,6 @@
     "java": ">=17"
   },
   "suggests": {
-    "audioplayer": "*",
-    "dwdsb": "*"
+    "audioplayer": "*"
   }
 }

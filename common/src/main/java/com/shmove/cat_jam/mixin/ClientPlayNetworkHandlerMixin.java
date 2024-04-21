@@ -23,12 +23,15 @@ public abstract class ClientPlayNetworkHandlerMixin implements TickablePacketLis
         final BlockPos pos = packet.getPos();
 
         // Fires custom event when jukebox disc is inserted or ejected
-        if (packet.getEventId() == WorldEvents.JUKEBOX_STARTS_PLAYING) {
+        final int DISC_INSERT_EVENT_ID = WorldEvents.field_42760;
+        final int DISC_EJECT_EVENT_ID = WorldEvents.field_42761;
+
+        if (packet.getEventId() == DISC_INSERT_EVENT_ID) {
             final String discID = Registries.ITEM.getId(Registries.ITEM.get(packet.getData())).toString();
             final Disc disc = cat_jam.discManager.getDisc(discID);
             cat_jam.addMusicSource(pos, disc);
         }
-        else if (packet.getEventId() == WorldEvents.JUKEBOX_STOPS_PLAYING) {
+        else if (packet.getEventId() == DISC_EJECT_EVENT_ID) {
             cat_jam.removeMusicSource(pos);
         }
 

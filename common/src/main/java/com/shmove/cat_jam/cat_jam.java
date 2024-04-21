@@ -384,38 +384,6 @@ public class cat_jam {
         );
         discManager.addDisc(new Disc("minecraft:music_disc_pigstep", DISC_PIGSTEP_SEGMENTS, 1.4));
 
-        final List<DiscSegment> DISC_RELIC_SEGMENTS = List.of(
-                new DiscSegment(75, 4),
-                new DiscSegment(69, 4),
-                new DiscSegment(59, 4),
-                new DiscSegment(59, 2, NodPattern.NONE),
-                new DiscSegment(59 * 4, 1), // high bpm to space note out by 1/4 beat
-                new DiscSegment(68 / 4.0, 4),
-                new DiscSegment(68 / 2.0, 3, NodPattern.SLIGHT),
-                new DiscSegment(68 / 2.0, 1),
-                new DiscSegment(68 / 2.0, 2, NodPattern.SLIGHT),
-                new DiscSegment(68, 5, NodPattern.NONE),
-                new DiscSegment(68, 2, NodPattern.SLIGHT),
-                new DiscSegment(68, 2, NodPattern.NONE),
-                new DiscSegment(68, 7, NodPattern.SLIGHT),
-                new DiscSegment(68, 3, NodPattern.NONE),
-                new DiscSegment(68, 11, NodPattern.SLIGHT),
-                new DiscSegment(68, 1, NodPattern.NONE),
-                new DiscSegment(68, 1, NodPattern.SLIGHT),
-                new DiscSegment(68, 3, NodPattern.NONE),
-                new DiscSegment(68 * 2, 62, new NodPattern("XxX_xxX_")),
-                new DiscSegment(68, 1, NodPattern.NONE),
-                new DiscSegment(68 * 2, 64, new NodPattern("xxxX")),
-                new DiscSegment(68, 8, new NodPattern("xX__")),
-                new DiscSegment(68, 31, NodPattern.DOWNBEAT8),
-                new DiscSegment(68, 1, NodPattern.NONE),
-                new DiscSegment(68, 48, NodPattern.DOWNBEAT8),
-                new DiscSegment(68, 1, NodPattern.SLIGHT),
-                new DiscSegment(68 / 2.0, 4, NodPattern.SLIGHT),
-                new DiscSegment(68, -1, NodPattern.NONE)
-        );
-        discManager.addDisc(new Disc("minecraft:music_disc_relic", DISC_RELIC_SEGMENTS, 4.05));
-
     }
 
 }
