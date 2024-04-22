@@ -362,8 +362,6 @@ public class cat_jam {
         );
         discManager.addDisc(new Disc("minecraft:music_disc_otherside", DISC_OTHERSIDE_SEGMENTS, 0));
 
-        discManager.addDisc(new Disc("minecraft:music_disc_5", 0, 0));
-
         final List<DiscSegment> DISC_PIGSTEP_SEGMENTS = List.of(
                 new DiscSegment(85 / 4.0, 8, NodPattern.SLIGHT),
                 new DiscSegment(60.0 / ((60.0 / (85.0 / 2.0)) * .75 ), 1, NodPattern.SLIGHT), // weird offset note after 3/4 beat [ 60s / ((60s / HALF-BPM) * 3/4) ]

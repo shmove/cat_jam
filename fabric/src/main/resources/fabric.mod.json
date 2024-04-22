@@ -21,9 +21,6 @@
   "entrypoints": {
     "client": [
       "com.shmove.cat_jam.fabric.cat_jam_fabric"
-    ],
-    "voicechat": [
-      "com.shmove.cat_jam.fabric.compat.audioplayer.AudioPlayerPlugin"
     ]
   },
   "mixins": [
@@ -35,8 +32,5 @@
     "fabric-api": "*",
     "minecraft": "${minecraft_version_range}",
     "java": ">=17"
-  },
-  "suggests": {
-    "audioplayer": "*"
   }
 }
