@@ -10,7 +10,7 @@ displayName = "cat_jam"
 displayURL="https://github.com/shmove/cat_jam"
 authors = "shmove"
 description = '''makes cats jam to the rhythm of music discs :3'''
-logoFile = "assets/cat_jam/icon.png"
+logoFile = "icon.png"
 displayTest="IGNORE_ALL_VERSION"
 
 [[dependencies.cat_jam]]

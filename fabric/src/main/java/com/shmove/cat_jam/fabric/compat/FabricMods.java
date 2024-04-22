@@ -3,13 +3,11 @@ package com.shmove.cat_jam.fabric.compat;
 import com.shmove.cat_jam.compat.Mods;
 import com.shmove.cat_jam.compat.supplementaries.Supplementaries;
 import com.shmove.cat_jam.fabric.compat.audioplayer.AudioPlayer;
-import com.shmove.cat_jam.fabric.compat.dwdsb.DiscsWhereDiscsShouldntBe;
 import net.fabricmc.loader.api.FabricLoader;
 
 public enum FabricMods implements Mods {
 
     AUDIO_PLAYER(AudioPlayer.MOD_ID, AudioPlayer::initialiseDiscs, AudioPlayer::initialiseCompatibility),
-    DISCS_WHERE_DISCS_SHOULDNT_BE(DiscsWhereDiscsShouldntBe.MOD_ID, DiscsWhereDiscsShouldntBe::initialiseDiscs),
     SUPPLEMENTARIES(Supplementaries.MOD_ID, Supplementaries::initialiseDiscs);
 
     private final String MOD_ID;

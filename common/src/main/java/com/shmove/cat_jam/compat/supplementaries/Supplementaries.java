@@ -35,7 +35,7 @@ public final class Supplementaries {
                 new DiscSegment(105, 32, new NodPattern("x_")),
                 new DiscSegment(105, -1, NodPattern.NONE)
         );
-        discManager.addDisc(new Disc("supplementaries:pancake", PANCAKE_SEGMENTS, 13.635));
+        discManager.addDisc(new Disc("supplementaries:pancake_disc", PANCAKE_SEGMENTS, 13.635));
 
         final List<DiscSegment> DISC_HEAVE_HO_SEGMENTS = List.of(
                 new DiscSegment(120, 1, NodPattern.SLIGHT),
