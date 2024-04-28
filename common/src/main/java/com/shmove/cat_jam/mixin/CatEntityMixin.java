@@ -143,12 +143,15 @@ public class CatEntityMixin implements JammingEntity {
 
     private void updateNod() {
 
-        if (discPlayback.anticipateBeat(2) && discPlayback.isNodBeat()) {
-            if (nodTick >= 0) return;
+        final int nodPreempt = 2;
+        final int slightNodPreempt = 1;
+
+        if (discPlayback.anticipateBeat(nodPreempt) && discPlayback.isNodBeat()) {
+            if (nodTick >= 0 && nodTick <= nodPreempt) return;
             nodTick = 0;
         }
-        else if (discPlayback.anticipateBeat(1) && discPlayback.isSlightNodBeat()) {
-            if (slightNodTick >= 0) return;
+        else if (discPlayback.anticipateBeat(slightNodPreempt) && discPlayback.isSlightNodBeat()) {
+            if (slightNodTick >= 0 && slightNodTick <= slightNodPreempt) return;
             slightNodTick = 0;
         }
 
