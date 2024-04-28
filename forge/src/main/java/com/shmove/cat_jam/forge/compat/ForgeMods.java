@@ -5,7 +5,7 @@ import net.minecraftforge.fml.ModList;
 
 public enum ForgeMods implements Mods {
 
-    ;
+    QUARK("quark");
 
     public final String MOD_ID;
 
