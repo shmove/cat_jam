@@ -35,4 +35,11 @@ public class DiscManager {
         return new Disc(id, DEFAULT_BPM, DEFAULT_OFFSET);
     }
 
+    /**
+     * Get the number of added discs
+     */
+    public int getDiscCount() {
+        return discs.size();
+    }
+
 }

@@ -26,6 +26,8 @@ public class cat_jam_fabric implements ModInitializer {
         ClientTickEvents.END_WORLD_TICK.register(cat_jam::tickPlayingDiscs);
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> cat_jam.clearPlayingDiscs());
         initialiseModdedDiscs();
+
+        cat_jam.LOGGER.info("cat_jam successfully initialised! (" + discManager.getDiscCount() + " customised jams loaded)");
     }
 
     private void initialiseModdedDiscs() {

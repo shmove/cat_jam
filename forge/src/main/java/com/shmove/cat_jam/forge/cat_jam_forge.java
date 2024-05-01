@@ -24,6 +24,8 @@ public class cat_jam_forge {
         cat_jam.init();
 
         initialiseModdedDiscs();
+
+        cat_jam.LOGGER.info("cat_jam successfully initialised! (" + discManager.getDiscCount() + " customised jams loaded)");
     }
 
     @SubscribeEvent
