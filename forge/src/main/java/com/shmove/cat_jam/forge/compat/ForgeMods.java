@@ -5,7 +5,7 @@ import net.minecraftforge.fml.ModList;
 
 public enum ForgeMods implements Mods {
 
-    ;
+    ALEXS_MOBS("alexsmobs");
 
     public final String MOD_ID;
 
