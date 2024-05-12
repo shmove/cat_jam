@@ -11,9 +11,9 @@ import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class cat_jam {
 
@@ -32,19 +32,25 @@ public class cat_jam {
 
     public static void tickPlayingDiscs(World world) {
 
-        for (Map.Entry<BlockPos, DiscPlayback> playingDisc : musicSourceBlocks.entrySet()) {
-            if (isBlockEntityLoadedAtPos(world, playingDisc.getKey())) {
-                playingDisc.getValue().tick();
+        // Iterate over a copy of the keys to avoid ConcurrentModificationException
+        final List<BlockPos> musicSourceBlockKeys = new ArrayList<>(musicSourceBlocks.keySet());
+        final List<Integer> musicSourceEntityKeys = new ArrayList<>(musicSourceEntities.keySet());
+
+        for (BlockPos sourcePos : musicSourceBlockKeys) {
+            if (isBlockEntityLoadedAtPos(world, sourcePos)) {
+                DiscPlayback playback = musicSourceBlocks.get(sourcePos);
+                if (playback != null) playback.tick();
             } else {
-                removeMusicSource(playingDisc.getKey());
+                removeMusicSource(sourcePos);
             }
         }
 
-        for (Map.Entry<Integer, DiscPlayback> playingDisc : musicSourceEntities.entrySet()) {
-            if (world.getEntityById(playingDisc.getKey()) != null) {
-                playingDisc.getValue().tick();
+        for (Integer musicSourceEntityID : musicSourceEntityKeys) {
+            if (world.getEntityById(musicSourceEntityID) != null) {
+                DiscPlayback playback = musicSourceEntities.get(musicSourceEntityID);
+                if (playback != null) playback.tick();
             } else {
-                removeMusicSource(playingDisc.getKey());
+                removeMusicSource(musicSourceEntityID);
             }
         }
 
@@ -81,7 +87,8 @@ public class cat_jam {
     public static BlockPos getClosestListenableSourcePos(Vec3d catPos) {
         BlockPos closestPos = null;
         double closestDistance = Double.MAX_VALUE;
-        for (BlockPos sourcePos : musicSourceBlocks.keySet()) {
+        final List<BlockPos> musicSourceBlockPositions = new ArrayList<>(musicSourceBlocks.keySet()); // copy to avoid ConcurrentModificationException
+        for (BlockPos sourcePos : musicSourceBlockPositions) {
             double distance = sourcePos.getSquaredDistance(catPos);
             if (distance < closestDistance && distance < MathHelper.square(JAM_RADIUS)) {
                 closestPos = sourcePos;
@@ -98,7 +105,8 @@ public class cat_jam {
 
         Entity closestEntity = null;
         double closestDistance = Double.MAX_VALUE;
-        for (Integer sourceEntityID : musicSourceEntities.keySet()) {
+        final List<Integer> musicSourceEntityIDs = new ArrayList<>(musicSourceEntities.keySet()); // copy to avoid ConcurrentModificationException
+        for (Integer sourceEntityID : musicSourceEntityIDs) {
 
             Entity sourceEntity = world.getEntityById(sourceEntityID);
             if (sourceEntity == null) continue;
