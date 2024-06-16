@@ -1,15 +1,15 @@
-package com.shmove.cat_jam.forge.compat;
+package com.shmove.cat_jam.neoforge.compat;
 
 import com.shmove.cat_jam.compat.Mods;
-import net.minecraftforge.fml.ModList;
+import net.neoforged.fml.ModList;
 
-public enum ForgeMods implements Mods {
+public enum NeoForgeMods implements Mods {
 
     ;
 
     public final String MOD_ID;
 
-    ForgeMods(String modID) {
+    NeoForgeMods(String modID) {
         this.MOD_ID = modID;
     }
 

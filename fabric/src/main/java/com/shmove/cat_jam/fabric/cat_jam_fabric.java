@@ -7,7 +7,7 @@ import com.shmove.cat_jam.helpers.discs.Disc;
 import com.shmove.cat_jam.helpers.discs.DiscManager;
 import com.shmove.cat_jam.helpers.discs.DiscSegment;
 import com.shmove.cat_jam.helpers.discs.NodPattern;
-import net.fabricmc.api.ModInitializer;
+import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 
@@ -15,10 +15,10 @@ import java.util.List;
 
 import static com.shmove.cat_jam.cat_jam.discManager;
 
-public class cat_jam_fabric implements ModInitializer {
+public class cat_jam_fabric implements ClientModInitializer {
 
     @Override
-    public void onInitialize() {
+    public void onInitializeClient() {
         cat_jam.init();
 
         if (FabricMods.AUDIO_PLAYER.isInstalled()) ClientTickEvents.END_WORLD_TICK.register(world -> AudioPlayer.tick());

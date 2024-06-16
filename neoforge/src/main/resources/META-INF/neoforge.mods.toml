@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[46,)"
+loaderVersion = "[2,)"
 issueTrackerURL = "https://github.com/shmove/cat_jam/issues"
 license = "CC-BY-NC-SA-4.0"
 
@@ -14,15 +14,18 @@ logoFile = "assets/cat_jam/icon.png"
 displayTest="IGNORE_ALL_VERSION"
 
 [[dependencies.cat_jam]]
-modId = "forge"
-mandatory = true
-versionRange = "[46,)"
+modId = "neoforge"
+type = "required"
+versionRange = "[${neoforge_version},)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.cat_jam]]
 modId = "minecraft"
-mandatory = true
-versionRange = "[1.20,)"
+type = "required"
+versionRange = "[1.21,)"
 ordering = "NONE"
 side = "BOTH"
+
+[[mixins]]
+config = "cat_jam.mixins.json"
