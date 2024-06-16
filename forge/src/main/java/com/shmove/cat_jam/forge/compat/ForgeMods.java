@@ -1,12 +1,12 @@
-package com.shmove.cat_jam.neoforge.compat;
+package com.shmove.cat_jam.forge.compat;
 
 import com.shmove.cat_jam.compat.Mods;
 import com.shmove.cat_jam.compat.supplementaries.Supplementaries;
-import com.shmove.cat_jam.neoforge.compat.alexsmobs.AlexsMobs;
-import com.shmove.cat_jam.neoforge.compat.quark.Quark;
-import net.neoforged.fml.ModList;
+import com.shmove.cat_jam.forge.compat.alexsmobs.AlexsMobs;
+import com.shmove.cat_jam.forge.compat.quark.Quark;
+import net.minecraftforge.fml.ModList;
 
-public enum NeoForgeMods implements Mods {
+public enum ForgeMods implements Mods {
 
     ALEXS_MOBS(AlexsMobs.MOD_ID, AlexsMobs::initialiseDiscs),
     QUARK(Quark.MOD_ID, Quark::initialiseDiscs),
@@ -16,11 +16,11 @@ public enum NeoForgeMods implements Mods {
     private final Runnable INITIALISE_DISCS;
     private final Runnable INITIALISE_COMPATIBILITY;
 
-    NeoForgeMods(String modID, Runnable initialiseDiscs) {
+    ForgeMods(String modID, Runnable initialiseDiscs) {
         this(modID, initialiseDiscs, () -> {});
     }
 
-    NeoForgeMods(String modID, Runnable initialiseDiscs, Runnable initialiseCompatibility) {
+    ForgeMods(String modID, Runnable initialiseDiscs, Runnable initialiseCompatibility) {
         this.MOD_ID = modID;
         this.INITIALISE_DISCS = initialiseDiscs;
         this.INITIALISE_COMPATIBILITY = initialiseCompatibility;

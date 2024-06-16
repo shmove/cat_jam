@@ -14,28 +14,27 @@ logoFile = "assets/cat_jam/icon.png"
 displayTest="IGNORE_ALL_VERSION"
 
 [[dependencies.cat_jam]]
-modId = "neoforge"
-type = "required"
-versionRange = "[${neoforge_version},)"
+modId = "forge"
+mandatory = true
+versionRange = "[${loader_version},)"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.cat_jam]]
 modId = "minecraft"
-type = "required"
+mandatory = true
 versionRange = "${minecraft_version_range}"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.cat_jam]]
 modId = "alexsmobs"
-type = "optional"
+mandatory = false
+versionRange = "*"
 ordering = "AFTER"
 
 [[dependencies.cat_jam]]
 modId = "quark"
-type = "optional"
+mandatory = false
+versionRange = "*"
 ordering = "AFTER"
-
-[[mixins]]
-config = "cat_jam.mixins.json"

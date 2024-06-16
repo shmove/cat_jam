@@ -1,4 +1,4 @@
-package com.shmove.cat_jam.neoforge.compat.alexsmobs;
+package com.shmove.cat_jam.forge.compat.alexsmobs;
 
 import com.shmove.cat_jam.discs.Disc;
 import com.shmove.cat_jam.discs.DiscSegment;

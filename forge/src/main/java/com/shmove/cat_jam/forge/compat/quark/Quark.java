@@ -1,4 +1,4 @@
-package com.shmove.cat_jam.neoforge.compat.quark;
+package com.shmove.cat_jam.forge.compat.quark;
 
 import com.shmove.cat_jam.discs.Disc;
 import com.shmove.cat_jam.discs.DiscSegment;
@@ -36,17 +36,17 @@ public final class Quark {
                 new DiscSegment(160, 16, new NodPattern("x_")),
                 new DiscSegment(160, -1, NodPattern.NONE)
         );
-        discManager.addDisc(new Disc("quark:music.endermosh", DISC_ENDERMOSH_SEGMENTS, 0.15));
+        discManager.addDisc(new Disc("quark:music_disc_endermosh", DISC_ENDERMOSH_SEGMENTS, 0.15));
 
         // Ambience Discs
-        discManager.addDisc(new Disc("quark:ambient.chatter",  0, 0));
-        discManager.addDisc(new Disc("quark:ambient.crickets", 0, 0));
-        discManager.addDisc(new Disc("quark:ambient.clock",    0, 0));
-        discManager.addDisc(new Disc("quark:ambient.fire",     0, 0));
-        discManager.addDisc(new Disc("quark:ambient.wind",     0, 0));
-        discManager.addDisc(new Disc("quark:ambient.rain",     0, 0));
-        discManager.addDisc(new Disc("quark:ambient.ocean",    0, 0));
-        discManager.addDisc(new Disc("quark:ambient.drips",    0, 0));
+        discManager.addDisc(new Disc("quark:music_disc_chatter",  0, 0));
+        discManager.addDisc(new Disc("quark:music_disc_crickets", 0, 0));
+        discManager.addDisc(new Disc("quark:music_disc_clock",    0, 0));
+        discManager.addDisc(new Disc("quark:music_disc_fire",     0, 0));
+        discManager.addDisc(new Disc("quark:music_disc_wind",     0, 0));
+        discManager.addDisc(new Disc("quark:music_disc_rain",     0, 0));
+        discManager.addDisc(new Disc("quark:music_disc_ocean",    0, 0));
+        discManager.addDisc(new Disc("quark:music_disc_drips",    0, 0));
     }
 
 }
