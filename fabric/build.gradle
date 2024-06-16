@@ -42,7 +42,7 @@ processResources {
     def expandProps = [
         "version": project.version,
         "fabric_loader_version": project.fabric_loader_version,
-        "minecraft_version": project.minecraft_version
+        "minecraft_version_range": project.minecraft_version_range_fabric
     ]
 
     filesMatching('fabric.mod.json') {

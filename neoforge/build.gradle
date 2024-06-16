@@ -44,8 +44,10 @@ dependencies {
 
 processResources {
     def expandProps = [
+        "loader_version": project.neoforge_loader_version,
         "version": project.version,
-        "neoforge_version": project.neoforge_version
+        "neoforge_version": project.neoforge_version,
+        "minecraft_version_range": project.minecraft_version_range_neoforge,
     ]
 
     filesMatching('META-INF/neoforge.mods.toml') {

@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "[2,)"
+loaderVersion = "${loader_version}"
 issueTrackerURL = "https://github.com/shmove/cat_jam/issues"
 license = "CC-BY-NC-SA-4.0"
 
@@ -23,7 +23,7 @@ side = "CLIENT"
 [[dependencies.cat_jam]]
 modId = "minecraft"
 type = "required"
-versionRange = "[1.21,)"
+versionRange = "${minecraft_version_range}"
 ordering = "NONE"
 side = "BOTH"
 
