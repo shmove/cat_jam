@@ -416,6 +416,100 @@ public class cat_jam {
         );
         discManager.addDisc(new Disc("minecraft:music_disc.relic", DISC_RELIC_SEGMENTS, 4.05));
 
+        final List<DiscSegment> DISC_CREATOR_MUSIC_BOX_SEGMENTS = List.of(
+                new DiscSegment(111, 24, new NodPattern("x_____")),
+                new DiscSegment(111, 48, new NodPattern("x__x_xx__x__")),
+                new DiscSegment(111, 18, new NodPattern("x__")),
+                new DiscSegment(111, 7, NodPattern.SLIGHT),
+                new DiscSegment(111, 3, new NodPattern("__x")), // begin winding down
+                new DiscSegment(108, 3, new NodPattern("__x")),
+                new DiscSegment(100, 3, new NodPattern("__x")),
+                new DiscSegment(92, 3, new NodPattern("__x")),
+                new DiscSegment(84, 3, new NodPattern("__x")),
+                new DiscSegment(68, 3, new NodPattern("__x")),
+                new DiscSegment(60, 3, new NodPattern("__x")),
+                new DiscSegment(60, -1, NodPattern.NONE)
+        );
+        discManager.addDisc(new Disc("minecraft:music_disc.creator_music_box", DISC_CREATOR_MUSIC_BOX_SEGMENTS, 2.622 + 0.05));
+
+        final List<DiscSegment> DISC_CREATOR_SEGMENTS = List.of(
+                new DiscSegment(90, 1, NodPattern.SLIGHT),
+                new DiscSegment(90, 6, new NodPattern("__x")),
+                new DiscSegment(87, 3, new NodPattern("__x")),
+                new DiscSegment(84, 3, new NodPattern("__x")),
+                new DiscSegment(78, 3, new NodPattern("__x")),
+                new DiscSegment(75.703, 5, NodPattern.NONE),
+                new DiscSegment(75.703, 1, NodPattern.SLIGHT), // first beat of transition
+                new DiscSegment(162, 11, new NodPattern("__x__x__xxx")), // awkward spelled out intro to resume normalcy
+                new DiscSegment(162, 24, new NodPattern("X__")),
+                new DiscSegment(162, 45, new NodPattern("X_x")),
+                new DiscSegment(162, 21, new NodPattern("X__")),
+                new DiscSegment(162, 6, new NodPattern("Xxx")),
+                new DiscSegment(162, 24, new NodPattern("X__")),
+                new DiscSegment(162, 42, new NodPattern("x__")),
+                new DiscSegment(162, 1, NodPattern.NONE),
+                new DiscSegment(162, 5, NodPattern.SLIGHT),
+                new DiscSegment(162, 48, new NodPattern("X_x")),
+                new DiscSegment(162, 21, new NodPattern("Xxx")),
+                new DiscSegment(162, 3),
+                new DiscSegment(162, 21, new NodPattern("Xxx")),
+                new DiscSegment(162, 3),
+                new DiscSegment(162, 45, new NodPattern("Xxx")),
+                new DiscSegment(162, 3),
+                new DiscSegment(162, 21, new NodPattern("Xxx")),
+                new DiscSegment(162, 3),
+                new DiscSegment(162, 21, new NodPattern("Xxx")),
+                new DiscSegment(162, 3),
+                new DiscSegment(162, 1), // begin winding down
+                new DiscSegment(162, 9, new NodPattern("__X")),
+                new DiscSegment(150, 3, new NodPattern("__X")),
+                new DiscSegment(138, 3, new NodPattern("__X")),
+                new DiscSegment(123, 5, NodPattern.NONE),
+                new DiscSegment(123, 1, NodPattern.SLIGHT),
+                new DiscSegment(78, 3, new NodPattern("__x")),
+                new DiscSegment(66, 3, new NodPattern("__x")),
+                new DiscSegment(60, 3, new NodPattern("__x")),
+                new DiscSegment(60, -1, NodPattern.NONE)
+        );
+        discManager.addDisc(new Disc("minecraft:music_disc.creator", DISC_CREATOR_SEGMENTS, 0 + 0.05));
+
+        final List<DiscSegment> DISC_PRECIPICE_SEGMENTS = List.of(
+                new DiscSegment(136, 40 + 5, new NodPattern("X_x_x_x_")),
+                new DiscSegment(136, 3, NodPattern.SLIGHT),
+                new DiscSegment(136, 28 + 1),
+                new DiscSegment(136 * 4, 12, new NodPattern("__X")),
+                new DiscSegment(136 * 4, 4, new NodPattern("_X")),
+                new DiscSegment(136, -1 + 60),
+                new DiscSegment(136 * 4, 12, new NodPattern("_____x")),
+                new DiscSegment(136 * 4, 7, NodPattern.NONE),
+                new DiscSegment(136 * 4, 1, NodPattern.SLIGHT),
+                new DiscSegment(136, -1 + 64, NodPattern.SLIGHT),
+                new DiscSegment(136, 24, new NodPattern("X_x_x_x_")),
+                new DiscSegment(136, 8, new NodPattern("X_X_xxxx")),
+                new DiscSegment(136, 12 + 1),
+                new DiscSegment(136 * 4, 12, new NodPattern("__X")),
+                new DiscSegment(136 * 4, 4, new NodPattern("_X")),
+                new DiscSegment(136, -1 + 12 + 1),
+                new DiscSegment(136 * 4, 12, new NodPattern("__X")),
+                new DiscSegment(136 * 4, 4, new NodPattern("_X")),
+                new DiscSegment(136, -1 + 96),
+                new DiscSegment(136, 32, new NodPattern("x___")),
+                new DiscSegment(136, 32, new NodPattern("x_")),
+                new DiscSegment(136, 32, new NodPattern("X_x_x_x_")),
+                new DiscSegment(136, 28, new NodPattern("Xxxx")),
+                new DiscSegment(136, 4, new NodPattern("Xx_x")),
+                new DiscSegment(136, 28 + 1, new NodPattern("Xxxx")),
+                new DiscSegment(136 * 4, 12, new NodPattern("__x")),
+                new DiscSegment(136 * 4, 2, new NodPattern("_x")),
+                new DiscSegment(136 * 4, 2, new NodPattern("_X")),
+                new DiscSegment(136, -1 + 120 + 1),
+                new DiscSegment(136 * 4, 24, new NodPattern("__x__x__x__X")),
+                new DiscSegment(136 * 4, 5, NodPattern.NONE),
+                new DiscSegment(136 * 4, 1),
+                new DiscSegment(136, -1, NodPattern.NONE)
+        );
+        discManager.addDisc(new Disc("minecraft:music_disc.precipice", DISC_PRECIPICE_SEGMENTS, 0.015 + 0.05));
+
     }
 
 }
