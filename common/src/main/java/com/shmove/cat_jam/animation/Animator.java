@@ -1,6 +1,7 @@
 package com.shmove.cat_jam.animation;
 
 import com.shmove.cat_jam.access.JammingEntity;
+import com.shmove.cat_jam.behaviour.JammingState;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.model.ModelUtil;
 import net.minecraft.util.math.MathHelper;
@@ -17,22 +18,24 @@ public final class Animator {
     private static final float[] SLIGHT_NOD_ANGLES = { 0.05f, 0.08f, 0.10f, 0.05f, -0.02f, 0.00f };
 
     public static void animateHead(JammingEntity meow, ModelPart head, float tickDelta) {
-        if (!meow.cat_jam$isInValidPoseToJam()) return;
+        if (!meow.cat_jam$isInValidStateToJam()) return;
 
-        if (meow.cat_jam$getNodTick() >= 0) {
-            float pivotTarget = head.pivotY + JAM_PIVOTS[meow.cat_jam$getNodTick()];
-            float pitchTarget = head.pitch + JAM_ANGLES[meow.cat_jam$getNodTick()];
-            if (meow.cat_jam$getNodTick() > 0) {
-                head.pivotY += JAM_PIVOTS[meow.cat_jam$getNodTick() - 1]; // recentres pivot to last anim position
-                head.pitch += JAM_ANGLES[meow.cat_jam$getNodTick() - 1];
+        final JammingState state = meow.cat_jam$getJammingState();
+
+        if (state.getNodTick() >= 0) {
+            float pivotTarget = head.pivotY + JAM_PIVOTS[state.getNodTick()];
+            float pitchTarget = head.pitch + JAM_ANGLES[state.getNodTick()];
+            if (state.getNodTick() > 0) {
+                head.pivotY += JAM_PIVOTS[state.getNodTick() - 1]; // recentres pivot to last anim position
+                head.pitch += JAM_ANGLES[state.getNodTick() - 1];
             }
             head.pivotY = MathHelper.lerp(tickDelta, head.pivotY, pivotTarget);
             head.pitch = ModelUtil.interpolateAngle(head.pitch, pitchTarget, tickDelta);
         }
 
-        else if (meow.cat_jam$getSlightNodTick() >= 0) {
-            float target = head.pitch + SLIGHT_NOD_ANGLES[meow.cat_jam$getSlightNodTick()];
-            if (meow.cat_jam$getSlightNodTick() > 0) head.pitch += SLIGHT_NOD_ANGLES[meow.cat_jam$getSlightNodTick() - 1];
+        else if (state.getSlightNodTick() >= 0) {
+            float target = head.pitch + SLIGHT_NOD_ANGLES[state.getSlightNodTick()];
+            if (state.getSlightNodTick() > 0) head.pitch += SLIGHT_NOD_ANGLES[state.getSlightNodTick() - 1];
             head.pitch = ModelUtil.interpolateAngle(head.pitch, target, tickDelta);
         }
 

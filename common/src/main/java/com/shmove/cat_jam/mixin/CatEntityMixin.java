@@ -1,12 +1,10 @@
 package com.shmove.cat_jam.mixin;
 
-import com.shmove.cat_jam.cat_jam;
+import com.shmove.cat_jam.behaviour.JammingState;
 import com.shmove.cat_jam.access.JammingEntity;
-import com.shmove.cat_jam.discs.DiscPlayback;
-import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityType;
 import net.minecraft.entity.passive.CatEntity;
-import net.minecraft.particle.ParticleTypes;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,185 +12,32 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(CatEntity.class)
-public class CatEntityMixin implements JammingEntity {
+public abstract class CatEntityMixin implements JammingEntity {
 
     @Unique
-    private BlockPos musicSourceBlock = null;
-    @Unique
-    private Integer musicSourceEntityID = null;
-    @Unique
-    private boolean catJamming = false;
-    @Unique
-    private DiscPlayback discPlayback = null;
+    private JammingState jammingState;
 
-    @Unique private int nodTick = -1;
-    @Unique private int slightNodTick = -1;
+    @Inject(method = "Lnet/minecraft/entity/passive/CatEntity;<init>(Lnet/minecraft/entity/EntityType;Lnet/minecraft/world/World;)V", at = @At("TAIL"))
+    private void init(EntityType<? extends CatEntity> entityType, World world, CallbackInfo ci) {
+        this.jammingState = new JammingState((CatEntity) (Object) this);
+    }
 
     @Inject(method = "tick()V", at = @At("TAIL"))
-    private void jamTick(CallbackInfo ci) {
-
-        CatEntity meow = (CatEntity) (Object) this;
-
-        // Ensure clientside
-        if (!meow.getWorld().isClient) return;
-
-        if (this.musicSourceBlock != null) {
-            // Lose interest if out of range / playback no longer being ticked
-            if (!this.musicSourceBlock.isWithinDistance(meow.getPos(), cat_jam.JAM_RADIUS) || !cat_jam.isSourcePlayingAtPos(this.musicSourceBlock))
-                cat_jam$resetJammingInfo();
-        }
-
-        if (this.musicSourceEntityID != null) {
-            // Lose interest if out of range / entity is dead / playback no longer being ticked
-            Entity musicSourceEntity = meow.getWorld().getEntityById(this.musicSourceEntityID);
-            if (musicSourceEntity == null || !musicSourceEntity.isInRange(meow, cat_jam.JAM_RADIUS) || !musicSourceEntity.isAlive() || !cat_jam.isSourcePlayingFromEntity(this.musicSourceEntityID))
-                cat_jam$resetJammingInfo();
-        }
-
-        // If not jamming, try to find a new music source
-        if (!catJamming)
-            findNewMusicSource();
-
-        if (catJamming) {
-            updateNod();
-            updateNodAnim();
-        }
+    private void tick(CallbackInfo ci) {
+        jammingState.tick();
     }
 
     @Override
-    public void cat_jam$resetJammingInfo() {
-        this.musicSourceBlock = null;
-        this.musicSourceEntityID = null;
-        this.discPlayback = null;
-        this.catJamming = false;
-
-        this.nodTick = -1;
-        this.slightNodTick = -1;
-    }
-
-    @Unique
-    private void findNewMusicSource() {
-        CatEntity meow = (CatEntity) (Object) this;
-
-        BlockPos nearbyBlockSource = cat_jam.getClosestListenableSourcePos(meow.getPos());
-        Entity nearbyEntitySource = cat_jam.getClosestListenableSourceEntity(meow.getPos());
-
-        final boolean FOUND_BLOCK_SOURCE = nearbyBlockSource != null;
-        final boolean FOUND_ENTITY_SOURCE = nearbyEntitySource != null;
-
-        if (!FOUND_BLOCK_SOURCE && !FOUND_ENTITY_SOURCE) return;
-
-        if (FOUND_BLOCK_SOURCE && FOUND_ENTITY_SOURCE) {
-            // Set to closer source
-            double blockDist = nearbyBlockSource.getSquaredDistance(meow.getPos());
-            double entityDist = nearbyEntitySource.squaredDistanceTo(meow);
-            if (blockDist < entityDist) {
-                cat_jam$updateMusicSource(nearbyBlockSource);
-            }
-            else {
-                cat_jam$updateMusicSource(nearbyEntitySource.getId());
-            }
-        } else if (FOUND_BLOCK_SOURCE) {
-            cat_jam$updateMusicSource(nearbyBlockSource);
-        } else if (FOUND_ENTITY_SOURCE) {
-            cat_jam$updateMusicSource(nearbyEntitySource.getId());
-        }
-
+    public JammingState cat_jam$getJammingState() {
+        return jammingState;
     }
 
     @Override
-    public void cat_jam$updateMusicSource(BlockPos sourcePos) {
+    public boolean cat_jam$isInValidStateToJam() {
         CatEntity meow = (CatEntity) (Object) this;
-
-        // Ensure cat is tame
-        if (!meow.isTamed()) return;
-
-        this.musicSourceBlock = sourcePos;
-        this.discPlayback = cat_jam.getDiscPlaybackAtPos(sourcePos);
-        this.catJamming = true;
-        meow.getWorld().addParticle(ParticleTypes.NOTE, meow.getX(), meow.getY() + 0.3, meow.getZ(), 0, 0, 0);
-    }
-
-    @Override
-    public void cat_jam$updateMusicSource(Integer sourceEntityID) {
-        CatEntity meow = (CatEntity) (Object) this;
-
-        // Ensure cat is tame
-        if (!meow.isTamed()) return;
-
-        this.musicSourceEntityID = sourceEntityID;
-        this.discPlayback = cat_jam.getDiscPlaybackFromEntity(sourceEntityID);
-        this.catJamming = true;
-        meow.getWorld().addParticle(ParticleTypes.NOTE, meow.getX(), meow.getY() + 0.3, meow.getZ(), 0, 0, 0);
-    }
-
-    // This would be cool, but sound appears to only be played on the server
-    /*@Inject(method = "getAmbientSound()Lnet/minecraft/sound/SoundEvent;", at = @At("HEAD"), cancellable = true)
-    private void preventOffBeatAmbientSound(CallbackInfoReturnable<SoundEvent> cir) {
-        CatEntity meow = (CatEntity) (Object) this;
-
-        // Ensure clientside
-        if (!meow.world.isClient) return;
-
-        if (catJamming) {
-            final boolean ON_BEAT = discPlayback.anticipateBeat(0);
-            final boolean NODLESS_SEGMENT = discPlayback.getCurrentSegment().nodType() == DiscSegment.NodType.NONE;
-            cat_jam.LOGGER.info("ON_BEAT: " + ON_BEAT + " | NODLESS_SEGMENT: " + NODLESS_SEGMENT);
-            if (!ON_BEAT || NODLESS_SEGMENT) cir.setReturnValue(null);
-        }
-    }*/
-
-    @Unique
-    private void updateNod() {
-
-        final int nodPreempt = 2;
-        final int slightNodPreempt = 1;
-
-        if (discPlayback.anticipateBeat(nodPreempt) && discPlayback.isNodBeat()) {
-            if (nodTick >= 0 && nodTick <= nodPreempt) return;
-            nodTick = 0;
-        }
-        else if (discPlayback.anticipateBeat(slightNodPreempt) && discPlayback.isSlightNodBeat()) {
-            if (slightNodTick >= 0 && slightNodTick <= slightNodPreempt) return;
-            slightNodTick = 0;
-        }
-
-    }
-
-    @Unique
-    private void updateNodAnim() {
-
-        final int nodAnimTickLength = 8;
-        final int slightNodAnimTickLength = 6;
-
-        if (nodTick >= 0) {
-            // sustain nod for N ticks, then finish on Nth
-            if (nodTick < (nodAnimTickLength - 1)) nodTick++;
-            else if (nodTick == (nodAnimTickLength - 1)) nodTick = -1;
-        }
-
-        if (slightNodTick >= 0) {
-            // sustain slight nod for N ticks, then finish on Nth
-            if (slightNodTick < (slightNodAnimTickLength - 1)) slightNodTick++;
-            else if (slightNodTick == (slightNodAnimTickLength - 1)) slightNodTick = -1;
-        }
-
-    }
-
-    @Override
-    public int cat_jam$getNodTick() {
-        return this.nodTick;
-    }
-
-    @Override
-    public int cat_jam$getSlightNodTick() {
-        return this.slightNodTick;
-    }
-
-    @Override
-    public boolean cat_jam$isInValidPoseToJam() {
-        CatEntity meow = (CatEntity) (Object) this;
-        return meow.isInSittingPose() && !meow.isInSleepingPose();
+        final boolean VALID_POSE = meow.isInSittingPose() || meow.isInSleepingPose();
+        final boolean VALID_ATTRIBUTES = meow.isTamed();
+        return VALID_POSE && VALID_ATTRIBUTES;
     }
 
 }

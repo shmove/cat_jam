@@ -1,19 +1,11 @@
 package com.shmove.cat_jam.access;
 
-import net.minecraft.util.math.BlockPos;
+import com.shmove.cat_jam.behaviour.JammingState;
 
 public interface JammingEntity {
 
-    void cat_jam$resetJammingInfo();
+    JammingState cat_jam$getJammingState();
 
-    void cat_jam$updateMusicSource(BlockPos sourcePos);
-
-    void cat_jam$updateMusicSource(Integer sourceEntityID);
-
-    int cat_jam$getNodTick();
-
-    int cat_jam$getSlightNodTick();
-
-    boolean cat_jam$isInValidPoseToJam();
+    boolean cat_jam$isInValidStateToJam();
 
 }
