@@ -39,14 +39,14 @@ public class CatEntityMixin implements JammingEntity {
         if (this.musicSourceBlock != null) {
             // Lose interest if out of range / playback no longer being ticked
             if (!this.musicSourceBlock.isWithinDistance(meow.getPos(), cat_jam.JAM_RADIUS) || !cat_jam.isSourcePlayingAtPos(this.musicSourceBlock))
-                resetJammingInfo();
+                cat_jam$resetJammingInfo();
         }
 
         if (this.musicSourceEntityID != null) {
             // Lose interest if out of range / entity is dead / playback no longer being ticked
             Entity musicSourceEntity = meow.getWorld().getEntityById(this.musicSourceEntityID);
             if (musicSourceEntity == null || !musicSourceEntity.isInRange(meow, cat_jam.JAM_RADIUS) || !musicSourceEntity.isAlive() || !cat_jam.isSourcePlayingFromEntity(this.musicSourceEntityID))
-                resetJammingInfo();
+                cat_jam$resetJammingInfo();
         }
 
         // If not jamming, try to find a new music source
@@ -60,7 +60,7 @@ public class CatEntityMixin implements JammingEntity {
     }
 
     @Override
-    public void resetJammingInfo() {
+    public void cat_jam$resetJammingInfo() {
         this.musicSourceBlock = null;
         this.musicSourceEntityID = null;
         this.discPlayback = null;
@@ -70,6 +70,7 @@ public class CatEntityMixin implements JammingEntity {
         this.slightNodTick = -1;
     }
 
+    @Unique
     private void findNewMusicSource() {
         CatEntity meow = (CatEntity) (Object) this;
 
@@ -86,21 +87,21 @@ public class CatEntityMixin implements JammingEntity {
             double blockDist = nearbyBlockSource.getSquaredDistance(meow.getPos());
             double entityDist = nearbyEntitySource.squaredDistanceTo(meow);
             if (blockDist < entityDist) {
-                updateMusicSource(nearbyBlockSource);
+                cat_jam$updateMusicSource(nearbyBlockSource);
             }
             else {
-                updateMusicSource(nearbyEntitySource.getId());
+                cat_jam$updateMusicSource(nearbyEntitySource.getId());
             }
         } else if (FOUND_BLOCK_SOURCE) {
-            updateMusicSource(nearbyBlockSource);
+            cat_jam$updateMusicSource(nearbyBlockSource);
         } else if (FOUND_ENTITY_SOURCE) {
-            updateMusicSource(nearbyEntitySource.getId());
+            cat_jam$updateMusicSource(nearbyEntitySource.getId());
         }
 
     }
 
     @Override
-    public void updateMusicSource(BlockPos sourcePos) {
+    public void cat_jam$updateMusicSource(BlockPos sourcePos) {
         CatEntity meow = (CatEntity) (Object) this;
 
         // Ensure cat is tame
@@ -113,7 +114,7 @@ public class CatEntityMixin implements JammingEntity {
     }
 
     @Override
-    public void updateMusicSource(Integer sourceEntityID) {
+    public void cat_jam$updateMusicSource(Integer sourceEntityID) {
         CatEntity meow = (CatEntity) (Object) this;
 
         // Ensure cat is tame
@@ -141,6 +142,7 @@ public class CatEntityMixin implements JammingEntity {
         }
     }*/
 
+    @Unique
     private void updateNod() {
 
         final int nodPreempt = 2;
@@ -157,6 +159,7 @@ public class CatEntityMixin implements JammingEntity {
 
     }
 
+    @Unique
     private void updateNodAnim() {
 
         final int nodAnimTickLength = 8;
@@ -177,12 +180,12 @@ public class CatEntityMixin implements JammingEntity {
     }
 
     @Override
-    public int getNodTick() {
+    public int cat_jam$getNodTick() {
         return this.nodTick;
     }
 
     @Override
-    public int getSlightNodTick() {
+    public int cat_jam$getSlightNodTick() {
         return this.slightNodTick;
     }
 

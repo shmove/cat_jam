@@ -32,9 +32,9 @@ public class CatEntityModelMixin<T extends CatEntity> extends OcelotEntityModel<
 
         if (!meow.isInSittingPose() && !meow.isInSleepingPose()) return;
 
-        if (meowmix.getNodTick() >= 0) {
-            float target = this.head.pivotY + CAT_JAM_PIVOTS[meowmix.getNodTick()];
-            if (meowmix.getNodTick() > 0) this.head.pivotY += CAT_JAM_PIVOTS[meowmix.getNodTick() - 1]; // recentres pivot to last anim position
+        if (meowmix.cat_jam$getNodTick() >= 0) {
+            float target = this.head.pivotY + CAT_JAM_PIVOTS[meowmix.cat_jam$getNodTick()];
+            if (meowmix.cat_jam$getNodTick() > 0) this.head.pivotY += CAT_JAM_PIVOTS[meowmix.cat_jam$getNodTick() - 1]; // recentres pivot to last anim position
             this.head.pivotY = MathHelper.lerp(tickDelta, this.head.pivotY, target);
         }
 
@@ -47,15 +47,15 @@ public class CatEntityModelMixin<T extends CatEntity> extends OcelotEntityModel<
 
         if (!meow.isInSittingPose() && !meow.isInSleepingPose()) return;
 
-        if (meowmix.getNodTick() >= 0) {
-            float target = this.head.pitch + CAT_JAM_ANGLES[meowmix.getNodTick()];
-            if (meowmix.getNodTick() > 0) this.head.pitch += CAT_JAM_ANGLES[meowmix.getNodTick() - 1];
+        if (meowmix.cat_jam$getNodTick() >= 0) {
+            float target = this.head.pitch + CAT_JAM_ANGLES[meowmix.cat_jam$getNodTick()];
+            if (meowmix.cat_jam$getNodTick() > 0) this.head.pitch += CAT_JAM_ANGLES[meowmix.cat_jam$getNodTick() - 1];
             this.head.pitch = ModelUtil.interpolateAngle(this.head.pitch, target, tickDelta);
         }
 
-        else if (meowmix.getSlightNodTick() >= 0) {
-            float target = this.head.pitch + SLIGHT_NOD_ANGLES[meowmix.getSlightNodTick()];
-            if (meowmix.getSlightNodTick() > 0) this.head.pitch += SLIGHT_NOD_ANGLES[meowmix.getSlightNodTick() - 1];
+        else if (meowmix.cat_jam$getSlightNodTick() >= 0) {
+            float target = this.head.pitch + SLIGHT_NOD_ANGLES[meowmix.cat_jam$getSlightNodTick()];
+            if (meowmix.cat_jam$getSlightNodTick() > 0) this.head.pitch += SLIGHT_NOD_ANGLES[meowmix.cat_jam$getSlightNodTick() - 1];
             this.head.pitch = ModelUtil.interpolateAngle(this.head.pitch, target, tickDelta);
         }
 

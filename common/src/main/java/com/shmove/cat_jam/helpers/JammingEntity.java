@@ -4,14 +4,14 @@ import net.minecraft.util.math.BlockPos;
 
 public interface JammingEntity {
 
-    void resetJammingInfo();
+    void cat_jam$resetJammingInfo();
 
-    void updateMusicSource(BlockPos sourcePos);
+    void cat_jam$updateMusicSource(BlockPos sourcePos);
 
-    void updateMusicSource(Integer sourceEntityID);
+    void cat_jam$updateMusicSource(Integer sourceEntityID);
 
-    int getNodTick();
+    int cat_jam$getNodTick();
 
-    int getSlightNodTick();
+    int cat_jam$getSlightNodTick();
 
 }
