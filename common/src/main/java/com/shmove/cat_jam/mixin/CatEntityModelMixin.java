@@ -1,6 +1,6 @@
 package com.shmove.cat_jam.mixin;
 
-import com.shmove.cat_jam.helpers.JammingEntity;
+import com.shmove.cat_jam.access.JammingEntity;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.model.ModelUtil;
 import net.minecraft.client.render.entity.model.CatEntityModel;

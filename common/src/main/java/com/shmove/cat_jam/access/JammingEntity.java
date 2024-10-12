@@ -1,4 +1,4 @@
-package com.shmove.cat_jam.helpers;
+package com.shmove.cat_jam.access;
 
 import net.minecraft.util.math.BlockPos;
 

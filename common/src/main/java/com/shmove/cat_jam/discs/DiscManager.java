@@ -1,4 +1,4 @@
-package com.shmove.cat_jam.helpers.discs;
+package com.shmove.cat_jam.discs;
 
 import com.shmove.cat_jam.cat_jam;
 

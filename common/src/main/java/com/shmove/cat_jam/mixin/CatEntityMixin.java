@@ -1,8 +1,8 @@
 package com.shmove.cat_jam.mixin;
 
 import com.shmove.cat_jam.cat_jam;
-import com.shmove.cat_jam.helpers.JammingEntity;
-import com.shmove.cat_jam.helpers.discs.DiscPlayback;
+import com.shmove.cat_jam.access.JammingEntity;
+import com.shmove.cat_jam.discs.DiscPlayback;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.CatEntity;
 import net.minecraft.particle.ParticleTypes;

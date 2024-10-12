@@ -1,4 +1,4 @@
-package com.shmove.cat_jam.helpers.discs;
+package com.shmove.cat_jam.discs;
 
 public record DiscSegment(double bpm, int lengthInBeats, NodPattern nodPattern, double beatTickInterval) {
 

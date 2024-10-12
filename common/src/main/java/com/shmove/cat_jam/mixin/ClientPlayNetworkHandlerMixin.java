@@ -1,7 +1,7 @@
 package com.shmove.cat_jam.mixin;
 
 import com.shmove.cat_jam.cat_jam;
-import com.shmove.cat_jam.helpers.discs.Disc;
+import com.shmove.cat_jam.discs.Disc;
 import net.minecraft.block.jukebox.JukeboxSong;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.listener.ClientPlayPacketListener;
