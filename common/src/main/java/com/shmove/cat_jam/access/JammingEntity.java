@@ -14,4 +14,6 @@ public interface JammingEntity {
 
     int cat_jam$getSlightNodTick();
 
+    boolean cat_jam$isInValidPoseToJam();
+
 }

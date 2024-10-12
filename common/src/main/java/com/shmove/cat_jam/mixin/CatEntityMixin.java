@@ -189,4 +189,10 @@ public class CatEntityMixin implements JammingEntity {
         return this.slightNodTick;
     }
 
+    @Override
+    public boolean cat_jam$isInValidPoseToJam() {
+        CatEntity meow = (CatEntity) (Object) this;
+        return meow.isInSittingPose() && !meow.isInSleepingPose();
+    }
+
 }
