@@ -1,12 +1,18 @@
 package com.shmove.cat_jam.neoforge;
 
 import com.shmove.cat_jam.cat_jam;
+import com.shmove.cat_jam.discs.Disc;
+import com.shmove.cat_jam.discs.DiscSegment;
+import com.shmove.cat_jam.discs.NodPattern;
+import com.shmove.cat_jam.neoforge.compat.NeoForgeMods;
 import net.minecraft.client.MinecraftClient;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.event.tick.LevelTickEvent;
+
+import java.util.List;
 
 import static com.shmove.cat_jam.cat_jam.discManager;
 
@@ -30,13 +36,43 @@ public final class cat_jam_neoforge {
 
     private void initialiseModdedDiscs() {
 
-        // Mod List
+        if (NeoForgeMods.QUARK.isInstalled()) {
 
-        /* final boolean example_mod = ModList.get().isLoaded("example_mod"); */
+            List<DiscSegment> DISC_ENDERMOSH_SEGMENTS = List.of(
+                    new DiscSegment(60, 8, NodPattern.NONE),
+                    new DiscSegment(60, 8, NodPattern.SLIGHT),
+                    new DiscSegment(60, 16, NodPattern.NORMAL_SLIGHT_ALTERNATING),
+                    new DiscSegment(60, 8, NodPattern.SLIGHT),
+                    new DiscSegment(60, 1),
+                    new DiscSegment(60, 3, NodPattern.NONE),
+                    new DiscSegment(60, 1, NodPattern.SLIGHT),
+                    new DiscSegment(160, 1, NodPattern.NONE),
+                    new DiscSegment(160, 26, new NodPattern("x_")),
+                    new DiscSegment(160, 4, NodPattern.SLIGHT),
+                    new DiscSegment(160, 64), // too fast?
+                    new DiscSegment(160, 64, new NodPattern("x_x_x_XX")),
+                    new DiscSegment(160, 32, new NodPattern("x_x_x_xx")),
+                    new DiscSegment(160, 64, new NodPattern("X_X_X_xx")),
+                    new DiscSegment(160, 32, new NodPattern("x_x___x_")),
+                    new DiscSegment(160, 32, NodPattern.SLIGHT),
+                    new DiscSegment(160, 32),
+                    new DiscSegment(160, 16, NodPattern.SLIGHT),
+                    new DiscSegment(160, 16, new NodPattern("x_")),
+                    new DiscSegment(160, -1, NodPattern.NONE)
+            );
+            discManager.addDisc(new Disc("quark:music.endermosh", DISC_ENDERMOSH_SEGMENTS, 0.15));
 
-        // Modded Discs
+            // Ambience Discs
+            discManager.addDisc(new Disc("quark:ambient.chatter",  0, 0));
+            discManager.addDisc(new Disc("quark:ambient.crickets", 0, 0));
+            discManager.addDisc(new Disc("quark:ambient.clock",    0, 0));
+            discManager.addDisc(new Disc("quark:ambient.fire",     0, 0));
+            discManager.addDisc(new Disc("quark:ambient.wind",     0, 0));
+            discManager.addDisc(new Disc("quark:ambient.rain",     0, 0));
+            discManager.addDisc(new Disc("quark:ambient.ocean",    0, 0));
+            discManager.addDisc(new Disc("quark:ambient.drips",    0, 0));
 
-        /* if (example_mod) discManager.addDisc(new Disc("example_mod:example_disc", 0, 0)); */
+        }
 
     }
 

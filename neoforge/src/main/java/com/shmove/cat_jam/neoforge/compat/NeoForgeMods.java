@@ -5,7 +5,7 @@ import net.neoforged.fml.ModList;
 
 public enum NeoForgeMods implements Mods {
 
-    ;
+    QUARK("quark");
 
     public final String MOD_ID;
 
