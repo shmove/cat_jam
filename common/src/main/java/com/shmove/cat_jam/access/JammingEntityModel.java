@@ -6,4 +6,6 @@ public interface JammingEntityModel {
 
     ModelPart cat_jam$getHead();
 
+    float cat_jam$getInitialHeadPivotY();
+
 }

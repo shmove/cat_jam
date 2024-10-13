@@ -3,7 +3,6 @@ package com.shmove.cat_jam.mixin;
 import com.shmove.cat_jam.access.JammingEntity;
 import com.shmove.cat_jam.access.JammingEntityModel;
 import com.shmove.cat_jam.animation.Animator;
-import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.VertexConsumerProvider;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -37,9 +36,8 @@ public abstract class LivingEntityRendererMixin<T extends LivingEntity, M extend
     )
     private void render(LivingEntity meow, float f, float tickDelta, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i, CallbackInfo ci) {
         if (!(meow instanceof JammingEntity meowmix)) return;
-        if (!(this.model instanceof JammingEntityModel)) throw new IllegalArgumentException("Cannot animate JammingEntity without an accessible head model!");
-        ModelPart head = ((JammingEntityModel) this.model).cat_jam$getHead();
-        Animator.animateHead(meowmix, head, tickDelta);
+        if (!(this.model instanceof JammingEntityModel meowdel)) throw new IllegalArgumentException("Cannot animate JammingEntity without an accessible JammingEntityModel!");
+        Animator.animateHead(meowmix, meowdel, tickDelta);
     }
 
 }

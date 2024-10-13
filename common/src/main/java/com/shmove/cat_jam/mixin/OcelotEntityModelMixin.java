@@ -19,4 +19,9 @@ public abstract class OcelotEntityModelMixin<T extends Entity> extends AnimalMod
         return head;
     }
 
+    @Override
+    public float cat_jam$getInitialHeadPivotY() {
+        return head.pivotY; // Cat head pivots are reset every frame
+    }
+
 }
