@@ -27,5 +27,15 @@ versionRange = "${minecraft_version_range}"
 ordering = "NONE"
 side = "BOTH"
 
+[[dependencies.cat_jam]]
+modId = "alexsmobs"
+type = "optional"
+ordering = "AFTER"
+
+[[dependencies.cat_jam]]
+modId = "quark"
+type = "optional"
+ordering = "AFTER"
+
 [[mixins]]
 config = "cat_jam.mixins.json"
