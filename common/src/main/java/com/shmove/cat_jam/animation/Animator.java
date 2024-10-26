@@ -1,10 +1,8 @@
 package com.shmove.cat_jam.animation;
 
-import com.shmove.cat_jam.access.JammingEntity;
 import com.shmove.cat_jam.access.JammingEntityModel;
-import com.shmove.cat_jam.behaviour.JammingState;
+import com.shmove.cat_jam.access.JammingEntityRenderState;
 import net.minecraft.client.model.ModelPart;
-import net.minecraft.client.model.ModelUtil;
 import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Unique;
 
@@ -18,27 +16,32 @@ public final class Animator {
     @Unique
     private static final float[] SLIGHT_NOD_ANGLES = { 0.05f, 0.08f, 0.10f, 0.05f, -0.02f, 0.00f };
 
-    public static void animateHead(JammingEntity meow, JammingEntityModel meowdel, float tickDelta) {
-        if (!meow.cat_jam$isInValidStateToJam()) return;
+    public static void animateHead(JammingEntityRenderState meowrender, JammingEntityModel meowdel) {
+        if (!meowrender.cat_jam$isInValidStateToJam()) return;
 
-        final JammingState state = meow.cat_jam$getJammingState();
         final ModelPart head = meowdel.cat_jam$getHead();
 
-        if (state.getNodTick() >= 0) {
-            float pivotTarget = meowdel.cat_jam$getInitialHeadPivotY() + JAM_PIVOTS[state.getNodTick()];
-            float pitchTarget = head.pitch + JAM_ANGLES[state.getNodTick()];
-            if (state.getNodTick() > 0) {
-                head.pivotY = meowdel.cat_jam$getInitialHeadPivotY() + JAM_PIVOTS[state.getNodTick() - 1]; // recentres pivot to last anim position
-                head.pitch += JAM_ANGLES[state.getNodTick() - 1];
+        if (meowrender.cat_jam$getNodAnimationProgress() >= 0) {
+            final int nodTick = (int) Math.floor(meowrender.cat_jam$getNodAnimationProgress());
+            final float tickDelta = meowrender.cat_jam$getNodAnimationProgress() - nodTick;
+
+            float pivotTarget = meowdel.cat_jam$getInitialHeadPivotY() + JAM_PIVOTS[nodTick];
+            float pitchTarget = head.pitch + JAM_ANGLES[nodTick];
+            if (nodTick > 0) {
+                head.pivotY = meowdel.cat_jam$getInitialHeadPivotY() + JAM_PIVOTS[nodTick - 1]; // recentres pivot to last anim position
+                head.pitch += JAM_ANGLES[nodTick - 1];
             }
             head.pivotY = MathHelper.lerp(tickDelta, head.pivotY, pivotTarget);
-            head.pitch = ModelUtil.interpolateAngle(head.pitch, pitchTarget, tickDelta);
+            head.pitch = MathHelper.lerpAngleRadians(tickDelta, head.pitch, pitchTarget);
         }
 
-        else if (state.getSlightNodTick() >= 0) {
-            float target = head.pitch + SLIGHT_NOD_ANGLES[state.getSlightNodTick()];
-            if (state.getSlightNodTick() > 0) head.pitch += SLIGHT_NOD_ANGLES[state.getSlightNodTick() - 1];
-            head.pitch = ModelUtil.interpolateAngle(head.pitch, target, tickDelta);
+        else if (meowrender.cat_jam$getSlightNodAnimationProgress() >= 0) {
+            final int slightNodTick = (int) Math.floor(meowrender.cat_jam$getSlightNodAnimationProgress());
+            final float tickDelta = meowrender.cat_jam$getSlightNodAnimationProgress() - slightNodTick;
+
+            float target = head.pitch + SLIGHT_NOD_ANGLES[slightNodTick];
+            if (slightNodTick > 0) head.pitch += SLIGHT_NOD_ANGLES[slightNodTick - 1];
+            head.pitch = MathHelper.lerpAngleRadians(tickDelta, head.pitch, target);
         }
 
     }

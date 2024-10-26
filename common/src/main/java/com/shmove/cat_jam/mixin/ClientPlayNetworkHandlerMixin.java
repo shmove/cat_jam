@@ -8,6 +8,7 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.listener.TickablePacketListener;
 import net.minecraft.network.packet.s2c.play.WorldEventS2CPacket;
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldEvents;
@@ -29,15 +30,17 @@ public abstract class ClientPlayNetworkHandlerMixin implements TickablePacketLis
 
         // Additional behaviour when jukebox disc is inserted or ejected
         if (packet.getEventId() == WorldEvents.JUKEBOX_STARTS_PLAYING) {
-            final JukeboxSong song = this.getRegistryManager().get(RegistryKeys.JUKEBOX_SONG).get(packet.getData());
-            if (song == null) {
-                cat_jam.LOGGER.error("Failed to discern sound event value " + packet.getData() + " playing from jukebox at (" + packet.getPos().toShortString() + ").");
-                return;
-            }
+            try {
+                final Registry<JukeboxSong> jukeboxSongRegistry = this.getRegistryManager().getOptional(RegistryKeys.JUKEBOX_SONG).orElseThrow(() -> new RuntimeException("Failed to get jukebox song registry"));
+                final JukeboxSong song = jukeboxSongRegistry.get(packet.getData());
+                if (song == null) throw new RuntimeException("Failed to discern sound event value " + packet.getData());
 
-            final String discID = song.soundEvent().getIdAsString();
-            final Disc disc = cat_jam.discManager.getDisc(discID);
-            cat_jam.addMusicSource(pos, disc);
+                final String discID = song.soundEvent().getIdAsString();
+                final Disc disc = cat_jam.discManager.getDisc(discID);
+                cat_jam.addMusicSource(pos, disc);
+            } catch (RuntimeException ex) {
+                cat_jam.LOGGER.error("Couldn't handle world event with jukebox at (" + packet.getPos().toShortString() + ") with error; " + ex.getMessage());
+            }
         }
         else if (packet.getEventId() == WorldEvents.JUKEBOX_STOPS_PLAYING) {
             cat_jam.removeMusicSource(pos);
