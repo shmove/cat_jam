@@ -5,9 +5,8 @@
   "minVersion": "0.8",
   "client": [
     "CatEntityMixin",
-    "CatEntityRenderStateMixin",
     "ClientPlayNetworkHandlerMixin",
-    "FelineEntityModelMixin",
+    "OcelotEntityModelMixin",
     "LivingEntityRendererMixin"
   ],
   "mixins": [

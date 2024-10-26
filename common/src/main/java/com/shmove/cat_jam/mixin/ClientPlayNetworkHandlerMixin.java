@@ -8,7 +8,6 @@ import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.listener.TickablePacketListener;
 import net.minecraft.network.packet.s2c.play.WorldEventS2CPacket;
 import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.WorldEvents;
@@ -31,8 +30,7 @@ public abstract class ClientPlayNetworkHandlerMixin implements TickablePacketLis
         // Additional behaviour when jukebox disc is inserted or ejected
         if (packet.getEventId() == WorldEvents.JUKEBOX_STARTS_PLAYING) {
             try {
-                final Registry<JukeboxSong> jukeboxSongRegistry = this.getRegistryManager().getOptional(RegistryKeys.JUKEBOX_SONG).orElseThrow(() -> new RuntimeException("Failed to get jukebox song registry"));
-                final JukeboxSong song = jukeboxSongRegistry.get(packet.getData());
+                final JukeboxSong song = this.getRegistryManager().get(RegistryKeys.JUKEBOX_SONG).get(packet.getData());
                 if (song == null) throw new RuntimeException("Failed to discern sound event value " + packet.getData());
 
                 final String discID = song.soundEvent().getIdAsString();
