@@ -1,51 +1,22 @@
 package com.shmove.cat_jam.fabric.compat.audioplayer;
 
-import com.shmove.cat_jam.cat_jam;
-import de.maxhenkel.voicechat.api.VoicechatPlugin;
-import de.maxhenkel.voicechat.api.events.EventRegistration;
-import de.maxhenkel.voicechat.api.events.OpenALSoundEvent;
-import net.minecraft.util.math.BlockPos;
+import com.shmove.cat_jam.discs.Disc;
+import com.shmove.cat_jam.discs.DiscManager;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import static com.shmove.cat_jam.cat_jam.discManager;
 
-public class AudioPlayer implements VoicechatPlugin {
+public class AudioPlayer {
 
-    public static final String DISC_SOUND_CATEGORY = "music_discs";
-    public static final String CUSTOM_DISC_ID = "audioplayer:custom_disc";
-    private static final int MAX_LIVELINESS = 5; // ticks to wait before considering a disc stopped
-    private static final HashMap<BlockPos, Integer> playbackLiveliness = new HashMap<>();
+    public static final String MOD_ID = "audioplayer";
 
-    @Override
-    public String getPluginId() { return cat_jam.MOD_ID; }
 
-    @Override
-    public void registerEvents(EventRegistration registration) {
-        registration.registerEvent(OpenALSoundEvent.Pre.class, this::onSound);
+    public static void initialiseCompatibility() {
+        ClientTickEvents.END_WORLD_TICK.register(world -> AudioPlayerPlugin.tick());
     }
 
-    private void onSound(OpenALSoundEvent.Pre sound) {
-        if (sound.getCategory() == null || sound.getPosition() == null) return;
-
-        if (sound.getCategory().equals(DISC_SOUND_CATEGORY))
-            pingPos(new BlockPos((int)Math.floor(sound.getPosition().getX()), (int)Math.floor(sound.getPosition().getY()), (int)Math.floor(sound.getPosition().getZ())));
-    }
-
-    public static void pingPos(BlockPos pos) {
-        if (!playbackLiveliness.containsKey(pos))
-            cat_jam.addMusicSource(pos, cat_jam.discManager.getDisc(CUSTOM_DISC_ID));
-        playbackLiveliness.put(pos, MAX_LIVELINESS); // refresh liveliness
-    }
-
-    public static void tick() {
-        for (BlockPos pos : new ArrayList<>(playbackLiveliness.keySet())) {
-            if (playbackLiveliness.get(pos) > 0) {
-                playbackLiveliness.put(pos, playbackLiveliness.get(pos) - 1); // decrement liveliness
-            } else {
-                playbackLiveliness.remove(pos); // remove if no longer playing
-                cat_jam.removeMusicSource(pos);
-            }
-        }
+    public static void initialiseDiscs() {
+        discManager.addDisc(new Disc(AudioPlayerPlugin.CUSTOM_DISC_ID, DiscManager.DEFAULT_BPM, DiscManager.DEFAULT_OFFSET));
     }
 
 }
